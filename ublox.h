@@ -160,7 +160,31 @@ typedef struct {
     powerModeType  powerSetup;              // power setup
     uint16_t       powerIntervalSecs;       // power-on interval, in seconds, if in interval mode
     uint16_t       powerOnTimeSecs;         // power on time, in seconds, if in interval mode
+    uint8_t		   nmeaVersion;				// NMEA Version - 0x21, 0x23, 0x40, or 0x41
 } ubxConfig;
+
+typedef struct {
+	byte		filter;
+	uint8_t		nmeaVersion;			// set to 0x41 for Galileo
+	uint8_t		numSV;
+	byte		flags;
+	byte		gnsToFilter1;
+	byte		gnsToFilter2;
+	byte		gnsToFilter3;
+	byte		gnsToFilter4;
+    uint8_t		svNumbering;
+	uint8_t		mainTalkerID;
+	uint8_t		gsvTalkerID;
+	uint8_t		version;				// set to 1
+	byte		bdsTalkerID1;
+	byte		bdsTaklerID2;
+	uint8_t		reserved1;
+	uint8_t		reserved2;
+	uint8_t		reserved3;
+	uint8_t		reserved4;
+	uint8_t		reserved5;
+	uint8_t		reserved6;
+} ubxNMEAConfig;
 
 char* getGnssName( gnssID id );
 char* getDynamicModelName( dynModel model );
