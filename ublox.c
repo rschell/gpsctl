@@ -398,7 +398,6 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
         switch( id ) {
 
             case GPS:
-            case GLONASS:
 
                 // enable it...
                 flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, true );
