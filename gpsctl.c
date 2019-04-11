@@ -442,6 +442,7 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         cJSON* time     = cJSON_CreateObject();
         cJSON* rate     = cJSON_CreateObject();
         cJSON* pwr      = cJSON_CreateObject();
+        cJSON* nmea     = cJSON_CreateObject();
         cJSON_AddItemToObject( root, "antenna",    ant  );
         cJSON_AddItemToObject( root, "GNSS",       gnss );
         cJSON_AddItemToObject( gnss, "GNSS_records", gnssRecs );
@@ -506,6 +507,8 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         cJSON_AddNumberToObject( pwr, "period_secs_for_interval", config.powerIntervalSecs );
         cJSON_AddNumberToObject( pwr, "on_time_secs_for_interval", config.powerOnTimeSecs );
 
+        cJSON_AddNumberToObject( nmea, "nmea_vasrion", config.nmeaVersion );
+
         char *jsonStr = cJSON_PrintUnformatted( root );
         printf( "%s\n", jsonStr );
 
@@ -515,19 +518,19 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         printf( "U-Blox GPS configuration\n" );
 
         printf( "  Antenna:\n" );
-        printf( "    Power enabled:            %s\n", yesNo( config.antPwr          ) );
-        printf( "    Short detection:          %s\n", yesNo( config.antShrtDet      ) );
-        printf( "    Open detection:           %s\n", yesNo( config.antOpenDet      ) );
-        printf( "    Power down on short:      %s\n", yesNo( config.antPwrDwnOnShrt ) );
-        printf( "    Auto recovery from short: %s\n", yesNo( config.antAutoRec      ) );
+        printf( "    Power enabled:                %s\n", yesNo( config.antPwr          ) );
+        printf( "    Short detection:              %s\n", yesNo( config.antShrtDet      ) );
+        printf( "    Open detection:               %s\n", yesNo( config.antOpenDet      ) );
+        printf( "    Power down on short:          %s\n", yesNo( config.antPwrDwnOnShrt ) );
+        printf( "    Auto recovery from short:     %s\n", yesNo( config.antAutoRec      ) );
 
         printf( "  GNSS:\n" );
-        printf( "    Tracking channels:  %d\n", config.trkChnnls  );
+        printf( "    Tracking channels:            %d\n", config.trkChnnls  );
         for( int i = 0; i < config.gnssRecs; i++ ) {
             printf( "    Type: %s\n", getGnssName( config.gnss[i].id ) );
-            printf( "      Enabled:          %s\n", yesNo( config.gnss[i].enabled ) );
-            printf( "      Minimum channels: %d\n", config.gnss[i].minChnnls );
-            printf( "      Maximum channels: %d\n", config.gnss[i].maxChnnls );
+            printf( "      Enabled:                    %s\n", yesNo( config.gnss[i].enabled ) );
+            printf( "      Minimum channels:           %d\n", config.gnss[i].minChnnls );
+            printf( "      Maximum channels:           %d\n", config.gnss[i].maxChnnls );
         }
 
         printf( "  Navigation engine:\n" );
@@ -575,14 +578,16 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         printf( "    User configurable delay:      %d nanoseconds\n",          config.userConfigDelay     );
 
         printf( "  Fix rate:\n" );
-        printf( "    Measurement rate:                 %d milliseconds\n",         config.measRateMs          );
-        printf( "    Measurements per fix:             %d\n",                      config.navRate             );
-        printf( "    Time reference:                   %s\n", getFixTimeRefName(   config.timeRef )           );
+        printf( "    Measurement rate:             %d milliseconds\n",         config.measRateMs          );
+        printf( "    Measurements per fix:         %d\n",                      config.navRate             );
+        printf( "    Time reference:               %s\n", getFixTimeRefName(   config.timeRef )           );
 
         printf( "  Power mode:\n" );
-        printf( "    Power setup:                      %s\n", getPowerModeName(    config.powerSetup )        );
-        printf( "    Period (if interval):             %d seconds\n",              config.powerIntervalSecs   );
-        printf( "    On time (if interval):            %d seconds\n",              config.powerOnTimeSecs     );
+        printf( "    Power setup:                  %s\n", getPowerModeName(    config.powerSetup )        );
+        printf( "    Period (if interval):         %d seconds\n",              config.powerIntervalSecs   );
+        printf( "    On time (if interval):        %d seconds\n",              config.powerOnTimeSecs     );
+		
+	printf( "  NMEA Version:                   %02x\n",                    config.nmeaVersion );
     }
 
     return makeOkReturn();
