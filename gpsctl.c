@@ -612,6 +612,8 @@ static slReturn parsePort( void* ptrArg, int intArg, const optionDef_slOptions *
     if( isErrorReturn( vsd ) )
         return makeErrorFmtMsgReturn(ERR_CAUSE( vsd ), "device \"%s\" is not a terminal", arg );
 
+    // stuff it away to the given pointer...
+    clientData->port = arg;
     return makeOkReturn();
 }
 
@@ -1090,7 +1092,7 @@ static optionDef_slOptions* getOptionDefs( const clientData_slOptions* clientDat
 
     optionDef_slOptions portDef = {
             1, "port", 'p', argRequired,                                        // max, long, short, arg
-            parsePort, NULL, 0,                                                 // parser, ptrArg, intArg
+            parsePort, (void *) &clientData->port, 0,                           // parser, ptrArg, intArg
             NULL,                                                               // constrainer
             NULL,                                                               // action
             "device",                                                           // argument name
