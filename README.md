@@ -34,6 +34,8 @@ Other *gpsctl* functions are specific to U-Blox GPS hardware:
 * Configures the baud rate that the U-Blox GPS uses for communication.
 * Configures whether the U-Blox GPS transmits NMEA data.
 * Infers the GPS' baud rate using the UBX protocol only.
+* Configures the use of the European Galileo satellites (which is off by default in U-Blox 3.01 firmware)
+and enables NMEA version 4.1 output for Galileo
 * Queries the U-Blox GPS for position, time, GPS version, GPS configuration, and GPS satellite information.
   The format of query results are selectable: either plain English or JSON.
 * Tests the pulse-per-second output of the U-Blox GPS (fundamental for NTP).
