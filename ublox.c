@@ -31,6 +31,7 @@
 #define UBX_CFG_RATE 0x08
 #define UBX_CFG_RST  0x04
 #define UBX_CFG_CFG  0x09
+#define UBX_CFG_NMEA 0x17
 #define UBX_MON      0x0A
 #define UBX_MON_VER  0x04
 #define UBX_NAV      0x01
@@ -45,10 +46,10 @@
 #define CFG_GNSS_MAX_MS     1000
 #define CFG_ANT_MAX_MS      1000
 #define CFG_PRT_MAX_MS      1000
+#define CFG_NMEA_MAX_MS     1000
 #define CFG_TP5_MAX_MS      1000
 #define CFG_RATE_MAX_MS     1000
 #define CFG_PMS_MAX_MS      1000
-
 
 static ubxType ut_ACK_NAK = { UBX_ACK, UBX_ACK_NAK };
 static ubxType ut_CFG_PRT = { UBX_CFG, UBX_CFG_PRT };
@@ -523,6 +524,28 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     free( body );
     free( nav5Msg.body );
 
+    // configure the NMEA version...
+    // get the NMEA configuration...
+    ubxType nmeaType = { UBX_CFG, UBX_CFG_NMEA };
+    body = create_slBuffer( 0, LittleEndian );
+    msg = createUbxMsg( nmeaType, body );
+    ubxMsg nmeaMsg;
+    slReturn nmeaResp = pollUbx( fdPort, msg, CFG_NMEA_MAX_MS, &nmeaMsg );
+    if( isErrorReturn( nmeaResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE( tp5Resp ), "problem getting NMEA Version information from GPS" );
+
+    // make the changes we need to make...
+    b = nmeaMsg.body;
+    put_uint8_slBuffer( b,  1,      0x41 );  //   NMEA version 41
+   
+    // now send it back to the GPS...
+    ubxMsg newnmeaMsg = createUbxMsg( nmeaMsg.type, b );
+    suamResp = sendUbxAckedMsg( fdPort, newnmeaMsg );
+    if( isErrorReturn( suamResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE(suamResp), "problem sending NMEA Version configuration to GPS" );
+    free( body );
+    free( nmeaMsg.body );
+
     return makeOkReturn();
 }
 
@@ -908,6 +931,18 @@ extern slReturn ubxGetConfig( int fdPort, int verbosity, ubxConfig* config ) {
     config->powerOnTimeSecs   =                 get_uint16_slBuffer( pmsMsg.body, 4 );
     free( body );
     free( pmsMsg.body );
+
+    // get the NMEA Version configuration...
+    ubxType nmeaType = { UBX_CFG, UBX_CFG_NMEA };
+    body = create_slBuffer( 0, LittleEndian );
+    msg = createUbxMsg( nmeaType, body );
+    ubxMsg nmeaMsg;
+    slReturn nmeaResp = pollUbx( fdPort, msg, CFG_NMEA_MAX_MS, &nmeaMsg );
+    if( isErrorReturn( nmeaResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE( nmeaResp ), "problem getting NMEA Version information from GPS" );
+    config->nmeaVersion        = get_uint8_slBuffer(  nmeaMsg.body, 1 );
+    free( body );
+    free( nmeaMsg.body );
 
     return makeOkReturn();
 }
