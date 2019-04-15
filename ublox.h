@@ -214,6 +214,7 @@ slReturn ubxGetSatellites( int fdPort, int verbosity, ubxSatellites* satellites 
 slReturn ubxSaveConfig( int fdPort, int verbosity );
 slReturn ubxGetFix( int fdPort, int verbosity, ubxFix* fix );
 slReturn ubxReset( int fdPort, int verbosity );
+slReturn ubxConfigGalileo( int fdPort, int verbosity );
 slReturn ubxConfigForTiming( int fdPort, int verbosity );
 slReturn ubxGetConfig( int fdPort, int verbosity, ubxConfig* config );
 slReturn ubxChangeBaudRate( int fdPort, unsigned int newBaudRate, int verbosity );
