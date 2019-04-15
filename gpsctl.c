@@ -1051,6 +1051,23 @@ static slReturn actionConfigForTiming( const optionDef_slOptions* defs, const ps
 
 }
 
+// Configure for Galileo Satellites...
+static slReturn actionConfigForGalileo( const optionDef_slOptions* defs, const psloConfig* config ) {
+
+    // make sure we're synchronized...
+    clientData_slOptions* clientData = config->clientData;
+    slReturn usResp = syncSerial( syncUBX, clientData );
+    if( isErrorReturn( usResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE( usResp ), "could not synchronize UBX protocol" );
+
+    // configure the GPS...
+    slReturn ucftResp = ubxConfigGalileo( config->clientData->fdPort, config->clientData->verbosity );
+    if( isErrorReturn( ucftResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE( ucftResp ), "problem configuring the GPS for timing" );
+
+    return makeOkReturn();
+
+}
 
 // Echo action function, which echoes NMEA data to stdout for a configurable period of time.
 static slReturn  actionEcho(  const optionDef_slOptions* defs, const psloConfig* config ) {
@@ -1236,6 +1253,15 @@ static optionDef_slOptions* getOptionDefs( const clientData_slOptions* clientDat
             "configure the GPS for maximum timing precision"
     };
 
+   optionDef_slOptions configureForGalileoDef = {
+            1, "galileo", 0, argNone,                                           // max, long, short, arg
+            NULL, NULL, 0,                                                      // parser, ptrArg, intArg
+            NULL,                                                               // constrainer
+            actionConfigForGalileo,                                             // action
+            NULL,                                                               // argument name
+            "configure the GPS for Galileo Satellites"
+    };
+	
     optionDef_slOptions optionDefs[] = {
 
             // initialization elements...
@@ -1253,6 +1279,7 @@ static optionDef_slOptions* getOptionDefs( const clientData_slOptions* clientDat
             newbaudDef,
             nmeaDef,
             queryDef,
+            configureForGalileoDef,
             configureForTimingDef,
             saveConfigDef,
             resetDef,
