@@ -391,9 +391,9 @@ extern slReturn ubxEnableNMEAMsg( int fdPort, int verbosity, nmeaMSG messageID, 
     ubxMsg nmeaMsg = createUbxMsg( ut_CFG_MSG, body );
 
     // now send it, and wait for our ack...
-    slReturn submResp = sendUbxAckedMsg( fdPort, nmeaMsg );
-    if( isErrorReturn( submResp ) )
-        return makeErrorMsgReturn( ERR_CAUSE( submResp ), "failed to enable /disable NMEA MSG" );
+    slReturn nmeaResp = sendUbxAckedMsg( fdPort, nmeaMsg );
+    if( isErrorReturn( nmeaResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE( nmeaResp ), "failed to enable /disable NMEA MSG" );
 
     free(body);
 
@@ -401,8 +401,8 @@ extern slReturn ubxEnableNMEAMsg( int fdPort, int verbosity, nmeaMSG messageID, 
 }
 
 
-// Configures the GPS for maximum timing accuracy...
-extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
+// Configure for Galileo
+extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
     // first read the current configuration...
@@ -482,20 +482,51 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     free( body );
     free( gnssMsg.body );
 
+    // configure the NMEA version...
+    // get the NMEA configuration...
+    ubxType nmeaType = { UBX_CFG, UBX_CFG_NMEA };
+    body = create_slBuffer( 0, LittleEndian );
+    msg = createUbxMsg( nmeaType, body );
+    ubxMsg nmeaMsg;
+    slReturn nmeaResp = pollUbx( fdPort, msg, CFG_NMEA_MAX_MS, &nmeaMsg );
+    if( isErrorReturn( nmeaResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE( nmeaResp ), "problem getting NMEA Version information from GPS" );
+
+    // make the changes we need to make...
+    b = nmeaMsg.body;
+    put_uint8_slBuffer( b,  1,      0x41 );  //   NMEA version 41
+   
+    // now send it back to the GPS...
+    ubxMsg newnmeaMsg = createUbxMsg( nmeaMsg.type, b );
+    nmeaResp = sendUbxAckedMsg( fdPort, newnmeaMsg );
+    if( isErrorReturn( nmeaResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE(nmeaResp), "problem sending NMEA Version configuration to GPS" );
+    free( body );
+    free( nmeaMsg.body );
+
+    return makeOkReturn();
+}
+
+
+// Configures the GPS for maximum timing accuracy...
+extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
+
+    // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
+    ubxConfigGalileo( fdPort, verbosity );
 
     // configure the time pulse...
     // get the time pulse configuration...
     ubxType tp5Type = { UBX_CFG, UBX_CFG_TP5 };
-    body = create_slBuffer( 1, LittleEndian );
+    slBuffer* body = create_slBuffer( 1, LittleEndian );
     *buffer_slBuffer( body ) = 0;  // we only look at time pulse zero...
-    msg = createUbxMsg( tp5Type, body );
+    ubxMsg msg = createUbxMsg( tp5Type, body );
     ubxMsg tp5Msg;
     slReturn tp5Resp = pollUbx( fdPort, msg, CFG_TP5_MAX_MS, &tp5Msg );
     if( isErrorReturn( tp5Resp ) )
         return makeErrorMsgReturn( ERR_CAUSE( tp5Resp ), "problem getting time pulse information from GPS" );
 
     // make the changes we need to make...
-    b = tp5Msg.body;
+    slBuffer* b = tp5Msg.body;
     put_uint16_slBuffer( b,  4,      56 );  // set the antenna cable delay to 56 ns...
     put_uint16_slBuffer( b,  6,      20 );  // set the RF group delay to 20 ns...
     put_uint32_slBuffer( b,  8, 1000000 );  // set the unlocked period to 1 second (1,000,000 microseconds)...
@@ -507,7 +538,7 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
 
     // now send it back to the GPS...
     ubxMsg newTp5Msg = createUbxMsg( tp5Msg.type, b );
-    suamResp = sendUbxAckedMsg( fdPort, newTp5Msg );
+    slReturn suamResp = sendUbxAckedMsg( fdPort, newTp5Msg );
     if( isErrorReturn( suamResp ) )
         return makeErrorMsgReturn( ERR_CAUSE(suamResp), "problem sending time pulse configuration to GPS" );
     free( body );
@@ -549,28 +580,6 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
         return makeErrorMsgReturn( ERR_CAUSE( suamResp ), "problem sending navigation engine configuration to GPS" );
     free( body );
     free( nav5Msg.body );
-
-    // configure the NMEA version...
-    // get the NMEA configuration...
-    ubxType nmeaType = { UBX_CFG, UBX_CFG_NMEA };
-    body = create_slBuffer( 0, LittleEndian );
-    msg = createUbxMsg( nmeaType, body );
-    ubxMsg nmeaMsg;
-    slReturn nmeaResp = pollUbx( fdPort, msg, CFG_NMEA_MAX_MS, &nmeaMsg );
-    if( isErrorReturn( nmeaResp ) )
-        return makeErrorMsgReturn( ERR_CAUSE( tp5Resp ), "problem getting NMEA Version information from GPS" );
-
-    // make the changes we need to make...
-    b = nmeaMsg.body;
-    put_uint8_slBuffer( b,  1,      0x41 );  //   NMEA version 41
-   
-    // now send it back to the GPS...
-    ubxMsg newnmeaMsg = createUbxMsg( nmeaMsg.type, b );
-    suamResp = sendUbxAckedMsg( fdPort, newnmeaMsg );
-    if( isErrorReturn( suamResp ) )
-        return makeErrorMsgReturn( ERR_CAUSE(suamResp), "problem sending NMEA Version configuration to GPS" );
-    free( body );
-    free( nmeaMsg.body );
 
     // Suppress NMEA output except for ZDA messages
     ubxEnableNMEAMsg(fdPort, verbosity, RMC, false);
