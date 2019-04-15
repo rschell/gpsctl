@@ -1,0 +1,6 @@
+20190415 - Phil Randal: 
+    Added --galileo option to enable Galileo Satellites and NMEA 4.1 separately (implied by --configure_for_timing)
+    Relaxed satellite fix constraints so I could actually get a fix using active GPS antenna
+    Disabled NMEA RMC, VTG, GSA, GSV, GLL, GGA and enabled ZDA for use with NTP driver 20 option 8
+    Fixed parsing of --port option to actually pass the specified port parameter
+    Changed version number to 0.6
