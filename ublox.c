@@ -32,6 +32,7 @@
 #define UBX_CFG_RST  0x04
 #define UBX_CFG_CFG  0x09
 #define UBX_CFG_NMEA 0x17
+#define UBX_CFG_MSG  0x01
 #define UBX_MON      0x0A
 #define UBX_MON_VER  0x04
 #define UBX_NAV      0x01
@@ -55,7 +56,7 @@ static ubxType ut_ACK_NAK = { UBX_ACK, UBX_ACK_NAK };
 static ubxType ut_CFG_PRT = { UBX_CFG, UBX_CFG_PRT };
 static ubxType ut_NAV_PVT = { UBX_NAV, UBX_NAV_PVT };
 static ubxType ut_CFG_CFG = { UBX_CFG, UBX_CFG_CFG };
-
+static ubxType ut_CFG_MSG = { UBX_CFG, UBX_CFG_MSG };
 
 typedef struct ubxMsg {
     ubxType type;
@@ -374,6 +375,32 @@ extern slReturn ubxReset( int fdPort, int verbosity ) {
 }
 
 
+// Enable / disable NMEA Message types
+extern slReturn ubxEnableNMEAMsg( int fdPort, int verbosity, nmeaMSG messageID, bool enable ) {
+    // construct the configuration message...
+    slBuffer* body = create_slBuffer( 8, LittleEndian );
+
+    put_uint8_slBuffer( body,  0, 0xf0 );             //  Message type NMEA
+    put_uint8_slBuffer( body,  1, messageID );
+    put_uint8_slBuffer( body,  2, 0x00 );             //  other ports
+    put_uint8_slBuffer( body,  3, (enable) ? 1 : 0 ); //  Serial port
+    put_uint8_slBuffer( body,  4, 0x00 );             //  other ports
+    put_uint8_slBuffer( body,  5, 0x00 );             //  other ports
+    put_uint8_slBuffer( body,  6, 0x00 );             //  other ports
+    put_uint8_slBuffer( body,  7, 0x00 );             //  other ports
+    ubxMsg nmeaMsg = createUbxMsg( ut_CFG_MSG, body );
+
+    // now send it, and wait for our ack...
+    slReturn submResp = sendUbxAckedMsg( fdPort, nmeaMsg );
+    if( isErrorReturn( submResp ) )
+        return makeErrorMsgReturn( ERR_CAUSE( submResp ), "failed to enable /disable NMEA MSG" );
+
+    free(body);
+
+    return makeOkReturn();
+}
+
+
 // Configures the GPS for maximum timing accuracy...
 extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
 
@@ -545,6 +572,15 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     free( body );
     free( nmeaMsg.body );
 
+    // Suppress NMEA output except for ZDA messages
+    ubxEnableNMEAMsg(fdPort, verbosity, RMC, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, VTG, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GSA, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GSV, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GLL, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GGA, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, ZDA, true);
+    
     return makeOkReturn();
 }
 
