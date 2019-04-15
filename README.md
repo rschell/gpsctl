@@ -77,3 +77,26 @@ has serious deficiencies in aptitude, intelligence, and knowledge (not to mentio
 > AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 > TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
+
+## Usage
+
+    gpsctl  -v                        verbosity (e.g. -vv)  
+            -q, --quiet               quiet mode  
+            -p, --port                port to use (default is /dev/serial0)  
+            -j, --json                output in JSON format  
+            -a, --autobaud            autodetect baud rate of the u-blox module (tries 230400, 115200, 57600, 38400, 19200, 9600)  
+            -b, --baud                use specified baud rate  
+            -M, --minbaud             minimum baud rate  
+            --test                    test PPS output from GPS  
+            -s, --sync                sync mode ascii, nmea, or ubx (default is ubx)  
+            -B, --newbaud             set GPS device and serial port to same new baud rate  
+            -n, --nmea                turn NMEA output on or off (y/n)  
+            -Q, --query               config / fix / satellites / version  
+            --galileo                 enable Galileo satellites, disable SBAS, IMES, QZSS, and configure to NMEA version 4.1  
+            --configure_for_timing    set stationery mode,  
+                                        enable Galileo (as above),  
+                                        disable NMEA RMC, VTG, GSA, GSV, GLL, GGA and enable ZDA  
+            --save_config             save config to battery-backed RAM  
+            -e, --echo                echo NMEA output  
+            --reset                   reset u-blox config to defaults  
+   
