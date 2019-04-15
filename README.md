@@ -93,8 +93,9 @@ has serious deficiencies in aptitude, intelligence, and knowledge (not to mentio
             -B, --newbaud             set GPS device and serial port to same new baud rate  
             -n, --nmea                turn NMEA output on or off (y/n)  
             -Q, --query               config / fix / satellites / version  
-            --galileo                 enable Galileo satellites, disable SBAS, IMES, QZSS,  
-                                        and configure to NMEA version 4.1  
+            --galileo                 enable Galileo satellites,  
+                                        disable SBAS, IMES, QZSS,  
+                                        use NMEA version 4.1 (instead of the 3.01 firmware default of 4.0)
             --configure_for_timing    set stationery mode,  
                                         enable Galileo (as above),  
                                         disable NMEA RMC, VTG, GSA, GSV, GLL, GGA and enable ZDA  
