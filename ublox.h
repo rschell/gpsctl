@@ -77,6 +77,7 @@ typedef enum { pmFull, pmBalanced, pmInterval, pmAggressive1Hz, pmAggressive2Hz,
 typedef enum { signalNone, signalSearching, signalAcquired, signalUnusable, signalCodeLocked, signalCodeCarrierLocked } signalQuality;
 typedef enum { healthUnknown, healthOk, healthBad } satelliteHealth;
 typedef enum { osNone, osEphemeris, osAlmanac, osAssistNowOffline, osAssistNowAutonomous, osOther } orbitSource;
+typedef enum { GGA, GLL, GSA, GSV, RMC, VTG, GRS, GST, ZDA } nmeaMSG;
 
 typedef struct {
     gnssID          gnssID;                 // GNSS that this satellite belongs to
@@ -185,6 +186,17 @@ typedef struct {
 	uint8_t		reserved5;
 	uint8_t		reserved6;
 } ubxNMEAConfig;
+
+typedef struct {
+	uint8_t		msgType;				// set to 0xFA
+	uint8_t		version;
+	uint8_t		port1;
+	uint8_t		port2;
+	uint8_t		port3;
+	uint8_t		port4;
+	uint8_t		port5;
+	uint8_t		port6;
+} ubxNMEAmsg;
 
 char* getGnssName( gnssID id );
 char* getDynamicModelName( dynModel model );
