@@ -173,7 +173,7 @@ typedef struct {
 	byte		gnsToFilter2;
 	byte		gnsToFilter3;
 	byte		gnsToFilter4;
-    uint8_t		svNumbering;
+        uint8_t		svNumbering;
 	uint8_t		mainTalkerID;
 	uint8_t		gsvTalkerID;
 	uint8_t		version;				// set to 1
