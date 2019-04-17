@@ -107,3 +107,11 @@ has serious deficiencies in aptitude, intelligence, and knowledge (not to mentio
 To autodetect the current baud rate, set the pi and u-blox module to 115200 baud, configure stationary mode, Galileo satellites, and NMEA ZDA output only, and to see what it's doing
 
     gpsctl -a -B 115200 --configure_for_timing -vv
+
+To autodetect the current baud rate and enable Galileo satellites
+
+    gpsctl -a --galileo
+    
+To view the current u-blox config
+
+    gpsctl -a -Q config
