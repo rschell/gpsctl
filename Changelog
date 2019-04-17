@@ -1,3 +1,6 @@
+20190417 - Phil Randal:
+    Updated cJSON from version 1.6.0 to 1.7.11
+    
 20190415 - Phil Randal: 
     Added --galileo option to enable Galileo Satellites and NMEA 4.1 separately (implied by --configure_for_timing)
     Relaxed satellite fix constraints so I could actually get a fix using active GPS antenna
