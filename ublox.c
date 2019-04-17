@@ -507,13 +507,8 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
     return makeOkReturn();
 }
 
-
-// Configures the GPS for maximum timing accuracy...
-extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
-
-    // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
-    ubxConfigGalileo( fdPort, verbosity );
-
+// Configure Time Pulse
+extern slReturn ubxConfigTimrPulse( int fdPort, int verbosity ) {
     // configure the time pulse...
     // get the time pulse configuration...
     ubxType tp5Type = { UBX_CFG, UBX_CFG_TP5 };
@@ -544,18 +539,21 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     free( body );
     free( tp5Msg.body );
 
-    // configure the navigation engine...
+    return makeOkReturn();
+}
+
+extern slReturn ubxConfigNavEngine( int fdPort, int verbosity ) {
     // get the navigation engine configuration...
     ubxType nav5Type = { UBX_CFG, UBX_CFG_NAV5 };
-    body = create_slBuffer( 0, LittleEndian );
-    msg = createUbxMsg( nav5Type, body );
+    slBuffer* body = create_slBuffer( 0, LittleEndian );
+    ubxMsg msg = createUbxMsg( nav5Type, body );
     ubxMsg nav5Msg;
     slReturn nav5Resp = pollUbx( fdPort, msg, CFG_NAV5_MAX_MS, &nav5Msg );
     if( isErrorReturn( nav5Resp ) )
         return makeErrorMsgReturn( ERR_CAUSE( nav5Resp ), "problem getting navigation engine information from GPS" );
 
     // make our changes...
-    b = nav5Msg.body;
+    slBuffer* b = nav5Msg.body;
     put_uint16_slBuffer( b,  0,     0x0577 );  // configure all settings...
     put_uint8_slBuffer(  b,  2, Stationary );  // use stationary mode...
     put_uint8_slBuffer(  b,  3,   Auto2D3D );  // use any mode...
@@ -575,11 +573,26 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
 
     // send it back to the GPS...
     ubxMsg newNav5Msg = createUbxMsg( nav5Msg.type, b );
-    suamResp = sendUbxAckedMsg( fdPort, newNav5Msg );
+    slReturn suamResp = sendUbxAckedMsg( fdPort, newNav5Msg );
     if( isErrorReturn( suamResp ) )
         return makeErrorMsgReturn( ERR_CAUSE( suamResp ), "problem sending navigation engine configuration to GPS" );
     free( body );
     free( nav5Msg.body );
+	
+    return makeOkReturn();
+}
+
+// Configures the GPS for maximum timing accuracy...
+extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
+
+    // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
+    ubxConfigGalileo( fdPort, verbosity );
+ 
+    // configure the time pulse...
+    ubxConfigTimePulse( fdPort, verbosity );
+
+    // configure the navigation engine...
+	ubxConfigNavEngine( fdPort, verbosity);
 
     // Suppress NMEA output except for ZDA messages
     ubxEnableNMEAMsg(fdPort, verbosity, RMC, false);
