@@ -592,7 +592,7 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     ubxConfigTimePulse( fdPort, verbosity );
 
     // configure the navigation engine...
-	ubxConfigNavEngine( fdPort, verbosity);
+    ubxConfigNavEngine( fdPort, verbosity);
 
     // Suppress NMEA output except for ZDA messages
     ubxEnableNMEAMsg(fdPort, verbosity, RMC, false);
