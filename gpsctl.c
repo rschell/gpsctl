@@ -229,8 +229,8 @@ static slReturn doFixQuery( const clientData_slOptions* clientData ) {
         cJSON_AddNumberToObject( root,   "number_of_satellites_used", fix.number_of_satellites_used );
 
         cJSON_AddItemToObject(   root, "time", time );
-        cJSON_AddNumberToObject( time, "month", fix.month );
         cJSON_AddNumberToObject( time, "year", fix.year );
+        cJSON_AddNumberToObject( time, "month", fix.month );
         cJSON_AddNumberToObject( time, "day", fix.day );
         cJSON_AddNumberToObject( time, "hour", fix.hour );
         cJSON_AddNumberToObject( time, "minute", fix.minute );
