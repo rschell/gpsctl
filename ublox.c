@@ -401,7 +401,7 @@ extern slReturn ubxEnableNMEAMsg( int fdPort, int verbosity, nmeaMSG messageID, 
 }
 
 
-extern slReturn ubxConfigNMEAVersion( int fdPort, int verbosity ) {
+extern slReturn ubxConfigNMEAVersion( int fdPort, int verbosity, uint8_t nmeaVersion ) {
     // configure the NMEA version...
     // get the NMEA configuration...
     ubxType nmeaType = { UBX_CFG, UBX_CFG_NMEA };
@@ -414,7 +414,7 @@ extern slReturn ubxConfigNMEAVersion( int fdPort, int verbosity ) {
 
     // make the changes we need to make...
     slBuffer* b = nmeaMsg.body;
-    put_uint8_slBuffer( b,  1,      0x41 );  //   NMEA version 41
+    put_uint8_slBuffer( b,  1,      nmeaVersion );
    
     // now send it back to the GPS...
     ubxMsg newnmeaMsg = createUbxMsg( nmeaMsg.type, b );
@@ -509,7 +509,7 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
     free( body );
     free( gnssMsg.body );
 
-    ubxConfigNMEAVersion( fdPort, verbosity );
+    ubxConfigNMEAVersion( fdPort, verbosity, 0x41 );
 	
     return makeOkReturn();
 }
