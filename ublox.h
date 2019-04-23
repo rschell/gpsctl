@@ -148,7 +148,7 @@ typedef struct {
     uint32_t       pulseLenRatioLock;       // pulse length (microseconds) or duty cycle (2^32) when locked, depending on "isFreq" and "lockedOtherSet"
     int32_t        userConfigDelay;         // user configurable time pulse delay
     bool           timePulse0Enabled;       // true if time pulse zero is enabled
-    bool           lockGpsFreq;            // true to synchronize time pulse to GNSS as soon as GNSS time is valid
+    bool           lockGpsFreq;             // true to synchronize time pulse to GNSS as soon as GNSS time is valid
     bool           lockedOtherSet;          // true to use "Lock" variants of frequency when GNSS locked, non-"Lock" variants otherwise
     bool           isFreq;                  // true to interpret "freqPeriod" values as frequency rather than period
     bool           isLength;                // true to interpret "pulseLen" values as period rather than duty cycle
@@ -173,7 +173,7 @@ typedef struct {
 	byte		gnsToFilter2;
 	byte		gnsToFilter3;
 	byte		gnsToFilter4;
-        uint8_t		svNumbering;
+	uint8_t		svNumbering;
 	uint8_t		mainTalkerID;
 	uint8_t		gsvTalkerID;
 	uint8_t		version;				// set to 1
