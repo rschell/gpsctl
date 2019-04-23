@@ -53,6 +53,21 @@
 #define DICT_INVALID_KEY	((char*)-1)
 
 /**
+ * @brief Include our own strdup to work around compile-time errors
+ * @param original string
+ * @return pointer to duplicated string
+ */
+char *strdup(const char *str)
+{
+    int n = strlen(str) + 1;
+    char *newstr = malloc(n * sizeof(char));
+    if (newstr) {
+        strcpy(newstr, str);
+    }
+    return newstr;
+}
+
+/**
  * @brief Double the allocated size associated to a pointer
  * @param size the current allocated size
  * @return re-allocated pointer on success, NULL on failure
