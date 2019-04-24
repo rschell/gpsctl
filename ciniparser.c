@@ -344,13 +344,14 @@ int ciniparser_getboolean(dictionary *d, const char *key, int notfound)
 	case 'o':
 		if (tolower(c[1]) == 'n') {
 			ret = 1;
-			break;
 		} else {
-			if (strlen(c) >= 3 && tolower(c[1]) == 'f' && tolower(c[2]) == 'f') {
-				ret = 0;
-				break;
+			if (strlen(c) >= 3) {
+				if (tolower(c[1]) == 'f' && tolower(c[2]) == 'f') {
+					ret = 0;
+				}
 			}
 		}
+		break;
 	}
 
 	return ret;
