@@ -1,3 +1,6 @@
+2019-04-23 - Phil Randal
+    Add ciniparser into the mix for future gpsctl.conf file parsing 
+
 2019-04-18 - Phil Randal
     Refactor some of the code
     Report Fix Date and time in ISO 8601 format (yyyy-mm-dd hh:mm:ss)
