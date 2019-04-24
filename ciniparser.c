@@ -363,6 +363,11 @@ int ciniparser_find_entry(dictionary *ini, char *entry)
 	return found;
 }
 
+int ciniparser_set(dictionary *d, char *entry, char *val)
+{
+	return dictionary_set(d, strlwc(entry), val);
+}
+
 int ciniparser_setstring(dictionary *d, char *entry, char *val)
 {
 	return dictionary_set(d, strlwc(entry), val);
@@ -503,11 +508,7 @@ dictionary *ciniparser_append(dictionary *dict, const char *ininame)
 
 dictionary *ciniparser_load(const char *ininame)
 {
-	dictionary *dict;
-	
-	dict = ciniparser_append(NULL, ininame);
-
-	return dict;
+	return ciniparser_append(NULL, ininame);
 }
 
 void ciniparser_freedict(dictionary *d)
