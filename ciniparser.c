@@ -204,10 +204,7 @@ char *ciniparser_getsecname(dictionary *d, int n)
 	if (d == NULL || n < 0)
 		return NULL;
 
-	if (n == 0)
-		n ++;
-
-	foundsec = 0;
+	foundsec = -1;
 
 	for (i = 0; i < d->size; i++) {
 		if (d->key[i] == NULL)
