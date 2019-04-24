@@ -463,6 +463,18 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
 
                 break;
 
+            case SBAS:
+
+                // disable everything else...
+                flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, false );
+                put_uint32_slBuffer( b, o + 4, flags );
+
+                // set our min and max channels...
+                put_uint8_slBuffer( b, o + 1,  0 );  // min of 0...
+                put_uint8_slBuffer( b, o + 2,  0 );  // max of 0...
+
+                break;
+
             case Galileo:
 
                 // enable it...
@@ -472,6 +484,42 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
                 // set our min and max channels...
                 put_uint8_slBuffer( b, o + 1,  4 );  // min of 4...
                 put_uint8_slBuffer( b, o + 2,  8 );  // max of 8...
+
+                break;
+
+            case BeiDou:
+
+                // disable everything else...
+                flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, false );
+                put_uint32_slBuffer( b, o + 4, flags );
+
+                // set our min and max channels...
+                put_uint8_slBuffer( b, o + 1,  0 );  // min of 0...
+                put_uint8_slBuffer( b, o + 2,  0 );  // max of 0...
+
+                break;
+
+            case IMES:
+
+                // disable everything else...
+                flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, false );
+                put_uint32_slBuffer( b, o + 4, flags );
+
+                // set our min and max channels...
+                put_uint8_slBuffer( b, o + 1,  0 );  // min of 0...
+                put_uint8_slBuffer( b, o + 2,  0 );  // max of 0...
+
+                break;
+
+            case QZSS:
+
+                // disable everything else...
+                flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, false );
+                put_uint32_slBuffer( b, o + 4, flags );
+
+                // set our min and max channels...
+                put_uint8_slBuffer( b, o + 1,  0 );  // min of 0...
+                put_uint8_slBuffer( b, o + 2,  0 );  // max of 0...
 
                 break;
 
@@ -486,18 +534,7 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
                 put_uint8_slBuffer( b, o + 2, 14 );  // max of 14...
 
                 break;
-                
-            default:
 
-                // disable everything else...
-                flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, false );
-                put_uint32_slBuffer( b, o + 4, flags );
-
-                // set our min and max channels...
-                put_uint8_slBuffer( b, o + 1,  0 );  // min of 0...
-                put_uint8_slBuffer( b, o + 2,  0 );  // max of 0...
-
-                break;
         }
     }
 
@@ -510,7 +547,7 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
     free( gnssMsg.body );
 
     ubxConfigNMEAVersion( fdPort, verbosity, 0x41 );
-	
+
     return makeOkReturn();
 }
 
