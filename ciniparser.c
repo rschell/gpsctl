@@ -328,22 +328,29 @@ double ciniparser_getdouble(dictionary *d, const char *key, double notfound)
 int ciniparser_getboolean(dictionary *d, const char *key, int notfound)
 {
 	char *c;
-	int ret;
+	int ret = notfound;
 
 	c = ciniparser_getstring(d, key, INI_INVALID_KEY);
 	if (c == INI_INVALID_KEY)
 		return notfound;
 
-	switch(c[0]) {
-	case 'y': case 'Y': case '1': case 't': case 'T':
+	switch(tolower(c[0])) {
+	case 'y': case '1': case 't':
 		ret = 1;
 		break;
-	case 'n': case 'N': case '0': case 'f': case 'F':
+	case 'n': case '0': case 'f':
 		ret = 0;
 		break;
-	default:
-		ret = notfound;
-		break;
+	case 'o':
+		if (tolower(c[1]) == 'n') {
+			ret = 1;
+			break;
+		} else {
+			if (strlen(c) >= 3 && tolower(c[1]) == 'f' && tolower(c[2]) == 'f') {
+				ret = 0;
+				break;
+			}
+		}
 	}
 
 	return ret;
