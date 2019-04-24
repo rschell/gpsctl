@@ -363,9 +363,38 @@ int ciniparser_find_entry(dictionary *ini, char *entry)
 	return found;
 }
 
-int ciniparser_set(dictionary *d, char *entry, char *val)
+int ciniparser_setstring(dictionary *d, char *entry, char *val)
 {
 	return dictionary_set(d, strlwc(entry), val);
+}
+
+int ciniparser_setint(dictionary *d, char *entry, int val)
+{
+	int res;
+	int length = snprintf( NULL, 0, "%d", val );
+	char* str = malloc( length + 1 );
+	snprintf( str, length + 1, "%d", val );
+	res = dictionary_set(d, strlwc(entry), str);
+	free(str);
+
+	return res;
+}
+
+int ciniparser_setdouble(dictionary *d, char *entry, double val)
+{
+	int res;
+	int length = snprintf( NULL, 0, "%f", val );
+	char* str = malloc( length + 1 );
+	snprintf( str, length + 1, "%f", val );
+	res = dictionary_set(d, strlwc(entry), str);
+	free(str);
+
+	return res;
+}
+
+int ciniparser_setboolean(dictionary *d, char *entry, int val)
+{
+	return dictionary_set(d, strlwc(entry), (val) ? "true" : "false");
 }
 
 void ciniparser_unset(dictionary *ini, char *entry)
@@ -373,7 +402,7 @@ void ciniparser_unset(dictionary *ini, char *entry)
 	dictionary_unset(ini, strlwc(entry));
 }
 
-dictionary *ciniparser_load(const char *ininame)
+dictionary *ciniparser_append(dictionary *dict, const char *ininame)
 {
 	FILE *in;
 	char line[ASCIILINESZ+1];
@@ -382,16 +411,16 @@ dictionary *ciniparser_load(const char *ininame)
 	char tmp[ASCIILINESZ+1];
 	char val[ASCIILINESZ+1];
 	int  last = 0, len, lineno = 0, errs = 0;
-	dictionary *dict;
+
+    if (!dict) {
+		dict = dictionary_new(0);
+    	if (!dict) {
+	    	return NULL;
+	    }
+	}
 
 	if ((in = fopen(ininame, "r")) == NULL) {
 		fprintf(stderr, "ciniparser: cannot open %s\n", ininame);
-		return NULL;
-	}
-
-	dict = dictionary_new(0);
-	if (!dict) {
-		fclose(in);
 		return NULL;
 	}
 
@@ -411,6 +440,7 @@ dictionary *ciniparser_load(const char *ininame)
 					ininame,
 					lineno);
 			dictionary_del(dict);
+			dict = NULL;
 			fclose(in);
 			return NULL;
 		}
@@ -467,6 +497,15 @@ dictionary *ciniparser_load(const char *ininame)
 	}
 
 	fclose(in);
+
+	return dict;
+}
+
+dictionary *ciniparser_load(const char *ininame)
+{
+	dictionary *dict;
+	
+	dict = ciniparser_append(NULL, ininame);
 
 	return dict;
 }

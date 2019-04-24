@@ -199,6 +199,45 @@ int ciniparser_getboolean(dictionary *d, const char *key, int notfound);
 int ciniparser_setstring(dictionary *ini, char *entry, char *val);
 
 /**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ * It is Ok to set val to NULL.
+ */
+int ciniparser_setint(dictionary *ini, char *entry, int val);
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ * It is Ok to set val to NULL.
+ */
+int ciniparser_setdouble(dictionary *ini, char *entry, double val);
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ * It is Ok to set val to NULL.
+ */
+int ciniparser_setboolean(dictionary *ini, char *entry, int val);
+
+/**
  * @brief    Delete an entry in a dictionary
  * @param    ini     Dictionary to modify
  * @param    entry   Entry to delete (entry name)
@@ -219,6 +258,21 @@ void ciniparser_unset(dictionary *ini, char *entry);
  * of querying for the presence of sections in a dictionary.
  */
 int ciniparser_find_entry(dictionary *ini, char *entry) ;
+
+/**
+ * @brief    Parse an ini file and merge with a an existing dictionary object
+ * @param    ini     Dictionary to merge with.  If NULL, create one.
+ * @param    ininame Name of the ini file to read.
+ * @return   Pointer to newly allocated dictionary
+ *
+ * This is the parser for ini files. This function is called, providing
+ * the name of the file to be read. It returns a dictionary object that
+ * should not be accessed directly, but through accessor functions
+ * instead.
+ *
+ * The returned dictionary must be freed using ciniparser_freedict().
+ */
+dictionary *ciniparser_append(dictionary *ini, const char *ininame);
 
 /**
  * @brief    Parse an ini file and return an allocated dictionary object
