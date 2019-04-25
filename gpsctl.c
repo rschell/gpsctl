@@ -86,6 +86,7 @@ struct clientData_slOptions {
     bool ubxSynchronized;
 };
 
+dictionary *gpsctlConf;
 
 // Set the sync method to that specified in the argument.  Returns Ok if there's no argument (and do nothing) or the
 // argument was recognized; or an Error if there was an unrecognizable argument.
@@ -1320,7 +1321,7 @@ static char* exampleText =
 
 // The entry point for gpsctl...
 int main( int argc, char *argv[] ) {
-
+    char *inifile = "/etc/gpsctl.conf";
     // initialize our client data structure, and set defaults...
     clientData_slOptions clientData = { 0 };
     clientData.baud = 0;            // triggers actionSetup to keep existing terminal options, including baud rate
@@ -1329,6 +1330,27 @@ int main( int argc, char *argv[] ) {
     clientData.syncMethod = syncUBX;
     clientData.verbosity = 1;
     clientData.ubxSynchronized = false;
+
+    // Create dictionary of program options 
+    gpsctlConf = dictionary_new(0);
+
+    // prepopulate dictionary with some default settings as above - they'll be overridden by gpsctl.conf entries if they exist
+    ciniparser_setstring(gpsctlConf, "gpsctl", NULL);
+    ciniparser_setstring(gpsctlConf, "gpsctl:port", "/dev/serial0");
+
+    // check if /etc/gpsctl.conf exists, and load it if it does
+    if (access(inifile, R_OK) == 0) {
+        gpsctlConf = ciniparser_append(gpsctlConf, inifile);
+        if (gpsctlConf == NULL) {
+            exit(1);
+        }
+    }
+    clientData.port = ciniparser_getstring(gpsctlConf, "gpsctl:port", "/dev/serial0");
+    slReturn vsd = verifySerialDevice( clientData.port );
+    if( isErrorReturn( vsd ) ) {
+        printf("Error: device \"%s\" is not a terminal\n", clientData.port );
+        exit( EXIT_FAILURE );
+    }
 
     psloConfig config = {
             getOptionDefs( &clientData ),                       // our command-line option definitions...

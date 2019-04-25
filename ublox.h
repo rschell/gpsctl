@@ -18,6 +18,7 @@
 #include "sl_buffer.h"
 #include "sl_return.h"
 #include "sl_serial.h"
+#include "ciniparser.h"
 
 typedef enum ubxState    { Valid, NotValid, NotPresent } ubxState;
 
@@ -223,5 +224,7 @@ slReturn ubxGetConfig( int fdPort, int verbosity, ubxConfig* config );
 slReturn ubxChangeBaudRate( int fdPort, unsigned int newBaudRate, int verbosity );
 slReturn ubxSetNMEAData( int fdPort, int verbosity, bool nmeaOn );
 slReturn ubxSynchronizer( int fdPort, int maxTimeMs, int verbosity );
+
+extern dictionary *gpsctlConf;
 
 #endif //GPSCTL_UBLOX_H
