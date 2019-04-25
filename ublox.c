@@ -665,15 +665,15 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     ubxConfigNavEngine( fdPort, verbosity);
 
     // Suppress NMEA output except for ZDA messages
-    ubxEnableNMEAMsg(fdPort, verbosity, GGA, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, GLL, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, GSA, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, GSV, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, RMC, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, VTG, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, GRS, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, GST, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, ZDA, true);
+    ubxEnableNMEAMsg(fdPort, verbosity, GGA, ciniparser_getboolean(gpsctlConf, "nmea:gga", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, GLL, ciniparser_getboolean(gpsctlConf, "nmea:gll", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, GSA, ciniparser_getboolean(gpsctlConf, "nmea:gsa", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, GSV, ciniparser_getboolean(gpsctlConf, "nmea:gsv", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, RMC, ciniparser_getboolean(gpsctlConf, "nmea:rmc", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, VTG, ciniparser_getboolean(gpsctlConf, "nmea:vtg", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, GRS, ciniparser_getboolean(gpsctlConf, "nmea:grs", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, GST, ciniparser_getboolean(gpsctlConf, "nmea:gst", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, ZDA, ciniparser_getboolean(gpsctlConf, "nmea:zda", true));
     
     return makeOkReturn();
 }
