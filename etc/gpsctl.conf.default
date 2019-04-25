@@ -1,8 +1,8 @@
-#
-# config file with settings as found in my devce after --reset
-#
 [gpsctl]
 port = /dev/serial0
+
+[NMEA]
+version = 40
 
 [GPS]
 enabled = yes
