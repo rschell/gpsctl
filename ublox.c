@@ -545,7 +545,7 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
             case GLONASS:
 
                 // enable it...
-                enabled = ciniparser_getboolean( gpsctlConf, "qlonass:enabled", true );
+                enabled = ciniparser_getboolean( gpsctlConf, "glonass:enabled", true );
                 flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, enabled );
                 put_uint32_slBuffer( b, o + 4, flags );
 
