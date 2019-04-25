@@ -433,7 +433,7 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
     // first read the current configuration...
-    int minch, maxch, enabled;
+    int minch, maxch, enabled, nmeaver;
     ubxType gnssType = { UBX_CFG, UBX_CFG_GNSS };
     slBuffer* body = create_slBuffer( 0, LittleEndian );
     ubxMsg msg = createUbxMsg( gnssType, body );
@@ -568,7 +568,10 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
     free( body );
     free( gnssMsg.body );
 
-    ubxConfigNMEAVersion( fdPort, verbosity, 0x41 );
+    nmeaver = ciniparser_getint( gpsctlConf, "nmea:version", 41 );
+    // convert to from integer 40, 41, etc to hex 0x40, 0x41
+    nmeaver = (nmeaver / 10) * 16 + (nmeaver % 10);
+    ubxConfigNMEAVersion( fdPort, verbosity, nmeaver );
 
     return makeOkReturn();
 }
