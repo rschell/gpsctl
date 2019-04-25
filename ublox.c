@@ -665,12 +665,14 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     ubxConfigNavEngine( fdPort, verbosity);
 
     // Suppress NMEA output except for ZDA messages
-    ubxEnableNMEAMsg(fdPort, verbosity, RMC, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, VTG, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GGA, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GLL, false);
     ubxEnableNMEAMsg(fdPort, verbosity, GSA, false);
     ubxEnableNMEAMsg(fdPort, verbosity, GSV, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, GLL, false);
-    ubxEnableNMEAMsg(fdPort, verbosity, GGA, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, RMC, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, VTG, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GRS, false);
+    ubxEnableNMEAMsg(fdPort, verbosity, GST, false);
     ubxEnableNMEAMsg(fdPort, verbosity, ZDA, true);
     
     return makeOkReturn();
