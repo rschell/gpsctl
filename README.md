@@ -135,6 +135,15 @@ To view the current u-blox config
     
     [NMEA]
     version = 41
+    GGA = off
+    GLL = off
+    GSA = off
+    GSV = off
+    RMC = off
+    VTG = off
+    GRS = off
+    GST = off
+    ZDA = on
     
     [GPS]
     enabled = yes
