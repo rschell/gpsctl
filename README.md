@@ -116,3 +116,57 @@ To autodetect the current baud rate and enable Galileo satellites
 To view the current u-blox config
 
     gpsctl -a -Q config
+    
+ ## New in version 0.7
+ 
+ At long last, the file /etc/gpsctl.conf is parsed for configuration options.
+ 
+ The [gpsctl] section is used to determine which serial port gpsctl uses.
+ 
+ The other sections are honoured by --galileo and --configure_for_timing, and override the defaults if present.
+ 
+ An example which configures for Galileo satellites:
+ 
+    #
+    # example gpsctl.conf which enables Galileo as in --galileo parameter
+    #
+    [gpsctl]
+    port = /dev/ttyAMA0
+    
+    [NMEA]
+    version = 41
+    
+    [GPS]
+    enabled = yes
+    minimum channels=8
+    maximum channels=16
+    
+    [SBAS]
+    enabled = no
+    minimum channels=1
+    maximum channels=3
+    
+    [Galileo]
+    enabled = yes
+    minimum channels=4
+    maximum channels=8
+    
+    [Beidou]
+    enabled = no
+    minimum channels=8
+    maximum channels=16
+
+    [IMES]
+    enabled = no
+    minimum channels=0
+    maximum channels=8
+
+    [QZSS]
+    enabled = no
+    minimum channels=0
+    maximum channels=3
+
+    [GLONASS]
+    enabled = yes
+    minimum channels=8
+    maximum channels=14
