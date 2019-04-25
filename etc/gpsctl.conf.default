@@ -6,6 +6,15 @@ port = /dev/serial0
 
 [NMEA]
 version = 40
+GGA = on
+GLL = on
+GSA = on
+GSV = on
+RMC = on
+VTG = on
+GRS = off
+GST = off
+ZDA = off
 
 [GPS]
 enabled = yes
