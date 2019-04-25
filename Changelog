@@ -1,3 +1,6 @@
+2019-04-25 - Phil Randal
+    Add /etc/gpsctl.conf file supporting satellite and nmea version configuration
+
 2019-04-23 - Phil Randal
     Add ciniparser into the mix for future gpsctl.conf file parsing 
 
