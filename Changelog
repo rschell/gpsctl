@@ -1,3 +1,6 @@
+2019-04-25 - Phil Randal
+    Add conf file support for enabling / disabling NMEA sentences
+
 2019-04-25 - Phil Randal - Release 0.7:
     Add /etc/gpsctl.conf file supporting satellite and nmea version configuration
 
