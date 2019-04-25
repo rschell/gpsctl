@@ -1,3 +1,6 @@
+#
+# config file with settings as found in my devce after --reset
+#
 [gpsctl]
 port = /dev/serial0
 
