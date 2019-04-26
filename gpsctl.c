@@ -1336,8 +1336,6 @@ int main( int argc, char *argv[] ) {
     clientData_slOptions clientData = { 0 };
     clientData.baud = 0;            // triggers actionSetup to keep existing terminal options, including baud rate
     clientData.minBaud = 9600;
-    clientData.port = "/dev/serial0";
-    clientData.syncMethod = syncUBX;
     clientData.ubxSynchronized = false;
 
     // Create dictionary of program options 
@@ -1351,7 +1349,7 @@ int main( int argc, char *argv[] ) {
     if (access(inifile, R_OK) == 0) {
         gpsctlConf = ciniparser_append(gpsctlConf, inifile);
         if (gpsctlConf == NULL) {
-            exit(1);
+            exit( EXIT_FAILURE );
         }
     }
     clientData.port = ciniparser_getstring(gpsctlConf, "gpsctl:port", "/dev/serial0");
@@ -1360,7 +1358,8 @@ int main( int argc, char *argv[] ) {
         printf("Error: device \"%s\" is not a terminal\n", clientData.port );
         exit( EXIT_FAILURE );
     }
-    clientData.verbosity = ciniparser_getint(gpsctlConf, "gpsctl:verbosity", 1);
+    clientData.verbosity  = ciniparser_getint(gpsctlConf, "gpsctl:verbosity", 1);
+    clientData.syncMethod = ciniparser_getint(gpsctlConf, "gpsctl:sync method", syncUBX);
 
     psloConfig config = {
             getOptionDefs( &clientData ),                       // our command-line option definitions...
