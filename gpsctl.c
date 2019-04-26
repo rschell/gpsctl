@@ -661,8 +661,16 @@ static slReturn parseSyncMethod( void* ptrArg, int intArg, const optionDef_slOpt
 static slReturn parseBool( void* ptrArg, int intArg, const optionDef_slOptions* def, const char* arg, clientData_slOptions* clientData ) {
 
     // see if we've got anything that like a yes or true (otherwise, we make it a false)...
-    *((bool*)ptrArg) = (arg == NULL) ? false : (strchr( "yYtT1", *arg ) != NULL);
-
+    *((bool*)ptrArg) = false;
+    if (arg) {
+        *((bool*)ptrArg) = (strchr( "yYtT1", *arg ) != NULL);
+        // now look for "on" and trueat it as true
+        if (strlen(arg) > 1) {
+            if ((tolower(arg[0]) == 'o') && (tolower(arg[1]) == 'n')) {
+                *((bool*)ptrArg) = true;
+            }
+        }
+    }
     // then return with no error...
     return makeOkReturn();
 }
