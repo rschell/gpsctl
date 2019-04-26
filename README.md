@@ -1,4 +1,4 @@
-<h1 align="center"><b>gpsctl 0.7</b></h1>
+<h1 align="center"><b>gpsctl 0.8</b></h1>
 
 ## What is gpsctl?
 *gpsctl* is a utility program written for Raspberry Pi computers using a U-Blox GPS board.  The 
@@ -117,13 +117,15 @@ To view the current u-blox config
 
     gpsctl -a -Q config
     
- ## New in version 0.7
+ ## New in version 0.7 and later
  
  At long last, the file /etc/gpsctl.conf is parsed for configuration options.
  
  The [gpsctl] section is used to determine which serial port gpsctl uses.
  
  The other sections are honoured by --galileo and --configure_for_timing, and override the defaults if present.
+ 
+ Without the gpsctl.conf file the program's behaviour will be the same as with version 0.6.
  
  An example which configures for Galileo satellites:
  
@@ -135,6 +137,15 @@ To view the current u-blox config
     
     [NMEA]
     version = 41
+    GGA = off
+    GLL = off
+    GSA = off
+    GSV = off
+    RMC = off
+    VTG = off
+    GRS = off
+    GST = off
+    ZDA = on
     
     [GPS]
     enabled = yes
