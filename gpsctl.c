@@ -508,7 +508,7 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         cJSON_AddNumberToObject( pwr, "period_secs_for_interval", config.powerIntervalSecs );
         cJSON_AddNumberToObject( pwr, "on_time_secs_for_interval", config.powerOnTimeSecs );
 
-        cJSON_AddNumberToObject( nmea, "nmea_vasrion", config.nmeaVersion );
+        cJSON_AddNumberToObject( nmea, "nmea_version", config.nmeaVersion );
 
         char *jsonStr = cJSON_PrintUnformatted( root );
         printf( "%s\n", jsonStr );
