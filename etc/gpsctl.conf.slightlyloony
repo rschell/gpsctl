@@ -8,6 +8,7 @@ sync method = 3
 verbosity = 1
 
 [NMEA]
+enabled = true
 version = 41
 GGA = off
 GLL = off
