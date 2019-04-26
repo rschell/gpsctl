@@ -1,3 +1,7 @@
+2019-04-26 - Phil Randal
+    Add defaults for "verbosity" and "sync method" to gpsctl.conf
+    Both can be overridden on the command line
+    
 2019-04-26 - Phil Randal - Release 0.9:
     Add --satellites option (same as --galileo, which is now deprecated)
     Force NMEA version 41 or higher if Galileo enabled
