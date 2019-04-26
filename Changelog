@@ -1,6 +1,6 @@
 2019-04-26 - Phil Randal - Release 0.9:
     Add --satellites option (same as --galileo)
-	Force NMEA version 41 or higher if Galileo enabled
+    Force NMEA version 41 or higher if Galileo enabled
 
 2019-04-26 - Phil Randal - Release 0.8:
     Add enabling / disabling NMEA sentences, timing and navigation engine config parameters to gpsctl.conf
