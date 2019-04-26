@@ -97,7 +97,7 @@ has serious deficiencies in aptitude, intelligence, and knowledge (not to mentio
             --galileo                 deprecated - same as --satellites
             --satellites              configure satellites only
                                         use NMEA version 4.1 or higher if Galileo satellites are enabled
-            --configure_for_timing    set stationery mode,  
+            --configure_for_timing    set stationary mode,  
                                         configure satellites (as above),  
                                         disable NMEA RMC, VTG, GSA, GSV, GLL, GGA and enable ZDA  
             --save_config             save config to battery-backed RAM  
