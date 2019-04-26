@@ -117,15 +117,13 @@ To view the current u-blox config
 
     gpsctl -a -Q config
     
- ## New in version 0.7 and later
+ ## New in version 0.7
  
  At long last, the file /etc/gpsctl.conf is parsed for configuration options.
  
  The [gpsctl] section is used to determine which serial port gpsctl uses.
  
  The other sections are honoured by --galileo and --configure_for_timing, and override the defaults if present.
- 
- Without the gpsctl.conf file the program's behaviour will be the same as with version 0.6.
  
  An example which configures for Galileo satellites:
  
@@ -137,15 +135,6 @@ To view the current u-blox config
     
     [NMEA]
     version = 41
-    GGA = off
-    GLL = off
-    GSA = off
-    GSV = off
-    RMC = off
-    VTG = off
-    GRS = off
-    GST = off
-    ZDA = on
     
     [GPS]
     enabled = yes
@@ -181,3 +170,33 @@ To view the current u-blox config
     enabled = yes
     minimum channels=8
     maximum channels=14
+
+    [Navigation Engine]
+    # Dynamic model: Portable = 0, Stationary = 2, Pedestrian = 3, Automotive = 4, Sea = 5, Air1G = 6, Air2G = 7, Air4G = 8, Watch = 9 
+    Dynamic model =                2
+    # Fix mode: 2D only = 1, 3D only = 2, auto 2D/3D = 3
+    Fix mode =                     3
+    Fixed altitude (2D) =          0.00 meters
+    Fixed altitude variance (2D) = 1.0000 meters^2
+    Minimum elevation =            5 degrees
+    Position DoP mask =            10.0
+    Time DoP mask =                10.0
+    Position accuracy mask =       100 meters
+    Time accuracy mask =           300 meters
+    Static hold threshold =        0 cm/s
+    Dynamic GNSS timeout =         60 seconds
+    Threshold above C/No =         0 satellites
+    C/No threshold =               0 dBHz
+    Static hold max distance =     0 meters
+    # UTC Standard: AutoUTC = 0, USNO_UTC = 3, GLONASS_UTC = 6, BeiDou_UTC = 7
+    UTC standard =                 3
+
+    [Time Pulse]
+    # the nanoseconds / microseconds after the numbers are just reminders, they don't mean anything to the config parser
+    Antenna cable delay = 56 nanoseconds
+    RF group delay = 20 ns
+    Unlocked pulse period = 1000000 microseconds
+    Unlocked pulse length = 0
+    Locked pulse period = 1000000 microseconds
+    Locked pulse length = 500000 microseconds
+    User configurable delay = 0
