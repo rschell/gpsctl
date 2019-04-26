@@ -1097,6 +1097,7 @@ static slReturn actionSetup( const optionDef_slOptions* defs, const psloConfig* 
     // stuff our file descriptor and return in victory...
     CD->fdPort = fdPort;
     if( V2 ) printf( "Serial port open and configured...\n" );
+
     // configure NMEA output here using setting derived from the conf file
     // it may be reconfigured by the -n or --nmea commandline parameters
     actionNMEA( defs, config );
