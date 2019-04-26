@@ -1,6 +1,7 @@
-2019-04-26 - Phil Randal
+2019-04-26 - Phil Randal - Release 1.0
     Add defaults for "verbosity" and "sync method" to gpsctl.conf
     Both can be overridden on the command line
+    Add nmea enabled option to config file
     
 2019-04-26 - Phil Randal - Release 0.9:
     Add --satellites option (same as --galileo, which is now deprecated)
