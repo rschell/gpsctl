@@ -1,8 +1,5 @@
 2019-04-26 - Phil Randal - Release 0.8:
-    Add timing and navigation engine config parameters to gpsctl.conf
-
-2019-04-25 - Phil Randal
-    Add conf file support for enabling / disabling NMEA sentences and specifying time pulse parameters
+    Add enabling / disabling NMEA sentences, timing and navigation engine config parameters to gpsctl.conf
 
 2019-04-25 - Phil Randal - Release 0.7:
     Add /etc/gpsctl.conf file supporting satellite and nmea version configuration
