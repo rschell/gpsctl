@@ -19,7 +19,8 @@ ZDA = on
 [GPS]
 enabled = yes
 minimum channels=8
-maximum channels=16
+maximum channels=14
+#maximum channels = 24 ----- looked like a typo to me
 
 [SBAS]
 enabled = no
@@ -29,6 +30,7 @@ maximum channels=3
 [Galileo]
 enabled = yes
 minimum channels=4
+#minimum channels=8  ------- looked like a typo to me
 maximum channels=8
 
 [Beidou]
@@ -50,6 +52,7 @@ maximum channels=3
 enabled = yes
 minimum channels=8
 maximum channels=14
+#maximum channels = 24 ----- looked like a typo to me
 
 [Navigation Engine]
 # Dynamic model: Portable = 0, Stationary = 2, Pedestrian = 3, Automotive = 4, Sea = 5, Air1G = 6, Air2G = 7, Air4G = 8, Watch = 9 
