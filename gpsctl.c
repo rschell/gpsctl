@@ -1338,7 +1338,6 @@ int main( int argc, char *argv[] ) {
     clientData.minBaud = 9600;
     clientData.port = "/dev/serial0";
     clientData.syncMethod = syncUBX;
-    clientData.verbosity = 1;
     clientData.ubxSynchronized = false;
 
     // Create dictionary of program options 
@@ -1361,6 +1360,7 @@ int main( int argc, char *argv[] ) {
         printf("Error: device \"%s\" is not a terminal\n", clientData.port );
         exit( EXIT_FAILURE );
     }
+    clientData.verbosity = ciniparser_getint(gpsctlConf, "gpsctl:verbosity", 1);
 
     psloConfig config = {
             getOptionDefs( &clientData ),                       // our command-line option definitions...
