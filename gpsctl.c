@@ -805,32 +805,6 @@ static slReturn  constrainVerbosity( const optionDef_slOptions* defs, const pslo
 #define V3 (CD->verbosity >= 3)
 
 
-// Setup action function, which opens and configures the serial port.
-static slReturn actionSetup( const optionDef_slOptions* defs, const psloConfig* config ) {
-
-    // first we try opening the device for the port...
-    int fdPort = open( CD->port, O_RDWR | O_NOCTTY | O_NONBLOCK );
-    if( fdPort < 0 ) {
-        printf( "Failed to open serial port: %s\n", strerror( errno ) );
-        exit(1);
-    }
-    if( V2 ) printf( "Serial port (\"%s\") open...\n", CD->port );
-
-    // stuff our file descriptor and return in victory...
-    CD->fdPort = fdPort;
-    if( V2 ) printf( "Serial port open and configured...\n" );
-    return makeOkReturn();
-}
-
-
-// Teardown action function, which closes the serial port.
-static slReturn actionTeardown( const optionDef_slOptions* defs, const psloConfig* config ) {
-
-    close( CD->fdPort );
-    return makeOkReturn();
-}
-
-
 // Test for the presence and quality of a 1 Hz signal on GPIO 18 (the PPS signal from the GPS), printing the result.
 #define PPS_PIN 1
 static slReturn actionTestPPS( const optionDef_slOptions* defs, const psloConfig* config ) {
@@ -1109,6 +1083,34 @@ static slReturn  actionQuiet(  const optionDef_slOptions* defs, const psloConfig
     return makeOkReturn();
 }
 
+// Setup action function, which opens and configures the serial port.
+static slReturn actionSetup( const optionDef_slOptions* defs, const psloConfig* config ) {
+
+    // first we try opening the device for the port...
+    int fdPort = open( CD->port, O_RDWR | O_NOCTTY | O_NONBLOCK );
+    if( fdPort < 0 ) {
+        printf( "Failed to open serial port: %s\n", strerror( errno ) );
+        exit(1);
+    }
+    if( V2 ) printf( "Serial port (\"%s\") open...\n", CD->port );
+
+    // stuff our file descriptor and return in victory...
+    CD->fdPort = fdPort;
+    if( V2 ) printf( "Serial port open and configured...\n" );
+    // configure NMEA output here using setting derived from the conf file
+    // it may be reconfigured by the -n or --nmea commandline parameters
+    actionNMEA( defs, config );
+    return makeOkReturn();
+}
+
+
+// Teardown action function, which closes the serial port.
+static slReturn actionTeardown( const optionDef_slOptions* defs, const psloConfig* config ) {
+
+    close( CD->fdPort );
+    return makeOkReturn();
+}
+
 
 static optionDef_slOptions* getOptionDefs( const clientData_slOptions* clientData ) {
 
@@ -1368,6 +1370,7 @@ int main( int argc, char *argv[] ) {
     }
     clientData.verbosity  = ciniparser_getint(gpsctlConf, "gpsctl:verbosity", 1);
     clientData.syncMethod = ciniparser_getint(gpsctlConf, "gpsctl:sync method", syncUBX);
+    clientData.nmea =   ciniparser_getboolean(gpsctlConf, "nmea:enabled", true);
 
     psloConfig config = {
             getOptionDefs( &clientData ),                       // our command-line option definitions...
