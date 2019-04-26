@@ -3,6 +3,8 @@
 #
 [gpsctl]
 port = /dev/serial0
+# sync method: ASCII = 1, NMEA = 2, UBX = 3
+sync method = 3
 verbosity = 1
 
 [NMEA]
