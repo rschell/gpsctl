@@ -3,6 +3,7 @@
 #
 [gpsctl]
 port = /dev/serial0
+verbosity = 1
 
 [NMEA]
 version = 40
