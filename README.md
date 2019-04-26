@@ -95,8 +95,8 @@ has serious deficiencies in aptitude, intelligence, and knowledge (not to mentio
             -n, --nmea                turn NMEA output on or off (y/n)  
             -Q, --query               config / fix / satellites / version  
             --galileo                 deprecated - same as --satellites
-			--satellites			  configure satellites only
-										use NMEA version 4.1 or higher if Galileo satellites are enabled
+            --satellites              configure satellites only
+                                        use NMEA version 4.1 or higher if Galileo satellites are enabled
             --configure_for_timing    set stationery mode,  
                                         configure satellites (as above),  
                                         disable NMEA RMC, VTG, GSA, GSV, GLL, GGA and enable ZDA  
