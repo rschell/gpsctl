@@ -664,7 +664,7 @@ static slReturn parseBool( void* ptrArg, int intArg, const optionDef_slOptions* 
     *((bool*)ptrArg) = false;
     if (arg) {
         *((bool*)ptrArg) = (strchr( "yYtT1", *arg ) != NULL);
-        // now look for "on" and trueat it as true
+        // now look for "on" and treat it as true
         if (strlen(arg) > 1) {
             if ((tolower(arg[0]) == 'o') && (tolower(arg[1]) == 'n')) {
                 *((bool*)ptrArg) = true;
