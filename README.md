@@ -134,6 +134,9 @@ To view the current u-blox config
     #
     [gpsctl]
     port = /dev/ttyAMA0
+    # sync method: ASCII = 1, NMEA = 2, UBX = 3
+    sync method = 3
+    verbosity = 0
     
     [NMEA]
     enabled = true
