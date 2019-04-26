@@ -1,4 +1,4 @@
-<h1 align="center"><b>gpsctl 0.9</b></h1>
+<h1 align="center"><b>gpsctl 1.0</b></h1>
 
 ## What is gpsctl?
 *gpsctl* is a utility program written for Raspberry Pi computers using a U-Blox GPS board.  The 
@@ -136,6 +136,7 @@ To view the current u-blox config
     port = /dev/ttyAMA0
     
     [NMEA]
+    enabled = true
     version = 41
     GGA = off
     GLL = off
