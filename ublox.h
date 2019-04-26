@@ -216,7 +216,7 @@ slReturn ubxSaveConfig( int fdPort, int verbosity );
 slReturn ubxGetFix( int fdPort, int verbosity, ubxFix* fix );
 slReturn ubxReset( int fdPort, int verbosity );
 slReturn ubxConfigNMEAVersion( int fdPort, int verbosity, uint8_t nmeaVersion );
-slReturn ubxConfigGalileo( int fdPort, int verbosity );
+slReturn ubxConfigSatellites( int fdPort, int verbosity );
 slReturn ubxConfigTimePulse( int fdPort, int verbosity );
 slReturn ubxConfigNavEngine( int fdPort, int verbosity );
 slReturn ubxConfigForTiming( int fdPort, int verbosity );

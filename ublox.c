@@ -428,14 +428,15 @@ extern slReturn ubxConfigNMEAVersion( int fdPort, int verbosity, uint8_t nmeaVer
 }
 
 
-// Configure for Galileo
-extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
+// Configure satellites
+extern slReturn ubxConfigSatellites( int fdPort, int verbosity ) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
     // first read the current configuration...
-    int minch, maxch, enabled, nmeaver;
+    int minch, maxch, enabled, galileo_enabled, nmeaver;
     double dnmeaver;
 
+    galileo_enabled = 0;
     ubxType gnssType = { UBX_CFG, UBX_CFG_GNSS };
     slBuffer* body = create_slBuffer( 0, LittleEndian );
     ubxMsg msg = createUbxMsg( gnssType, body );
@@ -487,8 +488,8 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
             case Galileo:
 
                 // enable it...
-                enabled = ciniparser_getboolean( gpsctlConf, "galileo:enabled", true );
-                flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, enabled );
+                galileo_enabled = ciniparser_getboolean( gpsctlConf, "galileo:enabled", true );
+                flags = (uint32_t) setBit_slBits( get_uint32_slBuffer( b, o + 4), 0, galileo_enabled );
                 put_uint32_slBuffer( b, o + 4, flags );
 
                 // set our min and max channels...
@@ -576,6 +577,10 @@ extern slReturn ubxConfigGalileo( int fdPort, int verbosity ) {
         dnmeaver = dnmeaver * 10.0;
     }
     nmeaver = (int) dnmeaver;    
+    // force nmea version 41 or higher if Galileo is enabled
+    if (galileo_enabled && nmeaver < 41) {
+        nmeaver = 41;
+    }
     // convert to from integer 40, 41, etc to hex 0x40, 0x41
     nmeaver = (nmeaver / 10) * 16 + (nmeaver % 10);
     ubxConfigNMEAVersion( fdPort, verbosity, nmeaver );
@@ -663,7 +668,7 @@ extern slReturn ubxConfigNavEngine( int fdPort, int verbosity ) {
 extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
-    ubxConfigGalileo( fdPort, verbosity );
+    ubxConfigSatellites( fdPort, verbosity );
  
     // configure the time pulse...
     ubxConfigTimePulse( fdPort, verbosity );

@@ -1,4 +1,4 @@
-<h1 align="center"><b>gpsctl 0.8</b></h1>
+<h1 align="center"><b>gpsctl 0.9</b></h1>
 
 ## What is gpsctl?
 *gpsctl* is a utility program written for Raspberry Pi computers using a U-Blox GPS board.  The 
@@ -94,11 +94,11 @@ has serious deficiencies in aptitude, intelligence, and knowledge (not to mentio
             -B, --newbaud             set GPS device and serial port to same new baud rate  
             -n, --nmea                turn NMEA output on or off (y/n)  
             -Q, --query               config / fix / satellites / version  
-            --galileo                 enable Galileo satellites,  
-                                        disable SBAS, IMES, QZSS,  
-                                        use NMEA version 4.1 (instead of the 3.01 firmware default of 4.0)
+            --galileo                 deprecated - same as --satellites
+			--satellites			  configure satellites only
+										use NMEA version 4.1 or higher if Galileo satellites are enabled
             --configure_for_timing    set stationery mode,  
-                                        enable Galileo (as above),  
+                                        configure satellites (as above),  
                                         disable NMEA RMC, VTG, GSA, GSV, GLL, GGA and enable ZDA  
             --save_config             save config to battery-backed RAM  
             -e, --echo                echo NMEA output  

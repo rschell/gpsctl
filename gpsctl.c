@@ -1052,8 +1052,8 @@ static slReturn actionConfigForTiming( const optionDef_slOptions* defs, const ps
 
 }
 
-// Configure for Galileo Satellites...
-static slReturn actionConfigForGalileo( const optionDef_slOptions* defs, const psloConfig* config ) {
+// Configure Satellites only...
+static slReturn actionConfigSatellites( const optionDef_slOptions* defs, const psloConfig* config ) {
 
     // make sure we're synchronized...
     clientData_slOptions* clientData = config->clientData;
@@ -1062,9 +1062,9 @@ static slReturn actionConfigForGalileo( const optionDef_slOptions* defs, const p
         return makeErrorMsgReturn( ERR_CAUSE( usResp ), "could not synchronize UBX protocol" );
 
     // configure the GPS...
-    slReturn ucftResp = ubxConfigGalileo( config->clientData->fdPort, config->clientData->verbosity );
+    slReturn ucftResp = ubxConfigSatellites( config->clientData->fdPort, config->clientData->verbosity );
     if( isErrorReturn( ucftResp ) )
-        return makeErrorMsgReturn( ERR_CAUSE( ucftResp ), "problem configuring the GPS for timing" );
+        return makeErrorMsgReturn( ERR_CAUSE( ucftResp ), "problem configuring the GPS satellites" );
 
     return makeOkReturn();
 
@@ -1258,11 +1258,20 @@ static optionDef_slOptions* getOptionDefs( const clientData_slOptions* clientDat
             1, "galileo", 0, argNone,                                           // max, long, short, arg
             NULL, NULL, 0,                                                      // parser, ptrArg, intArg
             NULL,                                                               // constrainer
-            actionConfigForGalileo,                                             // action
+            actionConfigSatellites,                                             // action
             NULL,                                                               // argument name
             "configure the GPS for Galileo Satellites"
     };
-	
+
+   optionDef_slOptions configureSatellitesDef = {
+            1, "satellites", 0, argNone,                                        // max, long, short, arg
+            NULL, NULL, 0,                                                      // parser, ptrArg, intArg
+            NULL,                                                               // constrainer
+            actionConfigSatellites,                                             // action
+            NULL,                                                               // argument name
+            "configure the GPS Satellites only"
+    };
+
     optionDef_slOptions optionDefs[] = {
 
             // initialization elements...
@@ -1281,6 +1290,7 @@ static optionDef_slOptions* getOptionDefs( const clientData_slOptions* clientDat
             nmeaDef,
             queryDef,
             configureForGalileoDef,
+            configureSatellitesDef,
             configureForTimingDef,
             saveConfigDef,
             resetDef,
@@ -1358,7 +1368,7 @@ int main( int argc, char *argv[] ) {
             NULL, NULL,                                         // before, after constraint-checking functions...
             actionSetup, actionTeardown,                        // before, after action functions.
             "gpsctl",                                           // name of gpsctl...
-            "0.8",                                              // version of gpsctl...
+            "0.9",                                              // version of gpsctl...
             exampleText,                                        // usage examples...
             SL_OPTIONS_CONFIG_NORMAL                            // slOptions configuration options...
     };
