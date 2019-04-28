@@ -47,8 +47,8 @@ based on the GPS' notion of time).
 
 ## Dependencies
 The only dependencies *gpsctl* has (other than the standard C library) is on the JSON library 
-[cJSON](https://github.com/DaveGamble/cJSON), ciniparser, and the popular Raspberry Pi I/O library 
-[WiringPi](http://wiringpi.com/).  The source for ciniparser and cJSON (which have MIT licenses) are incorporated in this project.  
+[cJSON](https://github.com/DaveGamble/cJSON), [iniparser](https://github.com/philrandal/iniparser), and the popular Raspberry Pi I/O library 
+[WiringPi](http://wiringpi.com/).  The source for iniparser and cJSON (which have MIT licenses) are incorporated in this project.  
   
 The WiringPi library must be present and linked.
 
