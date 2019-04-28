@@ -18,7 +18,7 @@
 #include "sl_buffer.h"
 #include "sl_return.h"
 #include "sl_serial.h"
-#include "ciniparser.h"
+#include "iniparser.h"
 
 typedef enum ubxState    { Valid, NotValid, NotPresent } ubxState;
 

@@ -1353,26 +1353,26 @@ int main( int argc, char *argv[] ) {
     gpsctlConf = dictionary_new(0);
 
     // prepopulate dictionary with some default settings as above - they'll be overridden by gpsctl.conf entries if they exist
-    ciniparser_setstring(gpsctlConf, "gpsctl", NULL);
-    ciniparser_setstring(gpsctlConf, "gpsctl:port", "/dev/serial0");
+    iniparser_set(gpsctlConf, "gpsctl", NULL);
+    iniparser_set(gpsctlConf, "gpsctl:port", "/dev/serial0");
 
     // check if /etc/gpsctl.conf exists, and load it if it does
     if (access(inifile, R_OK) == 0) {
-        gpsctlConf = ciniparser_append(gpsctlConf, inifile);
+        gpsctlConf = iniparser_merge(gpsctlConf, inifile);
         if (gpsctlConf == NULL) {
             exit( EXIT_FAILURE );
         }
     }
-    clientData.port = ciniparser_getstring(gpsctlConf, "gpsctl:port", "/dev/serial0");
+    clientData.port = iniparser_getstring(gpsctlConf, "gpsctl:port", "/dev/serial0");
     slReturn vsd = verifySerialDevice( clientData.port );
     if( isErrorReturn( vsd ) ) {
         printf("Error: device \"%s\" is not a terminal\n", clientData.port );
         exit( EXIT_FAILURE );
     }
-    clientData.verbosity  = ciniparser_getint(gpsctlConf, "gpsctl:verbosity", 1);
-    clientData.syncMethod = ciniparser_getint(gpsctlConf, "gpsctl:sync method", syncUBX);
-    clientData.nmea =   ciniparser_getboolean(gpsctlConf, "nmea:enabled", true);
-
+    clientData.verbosity  = iniparser_getint(gpsctlConf, "gpsctl:verbosity", 1);
+    clientData.syncMethod = iniparser_getint(gpsctlConf, "gpsctl:sync method", syncUBX);
+    clientData.nmea =   iniparser_getboolean(gpsctlConf, "nmea:enabled", true);
+    // iniparser_dump_ini(gpsctlConf, stdout);
     psloConfig config = {
             getOptionDefs( &clientData ),                       // our command-line option definitions...
             &clientData,                                        // our options processing data structure...
