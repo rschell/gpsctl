@@ -681,7 +681,7 @@ extern slReturn ubxConfigForTiming( int fdPort, int verbosity ) {
     ubxEnableNMEAMsg(fdPort, verbosity, GLL, iniparser_getboolean(gpsctlConf, "nmea:gll", false));
     ubxEnableNMEAMsg(fdPort, verbosity, GSA, iniparser_getboolean(gpsctlConf, "nmea:gsa", false));
     ubxEnableNMEAMsg(fdPort, verbosity, GSV, iniparser_getboolean(gpsctlConf, "nmea:gsv", false));
-    ubxEnableNMEAMsg(fdPort, verbosity, RMC, iniparser_getboolean(gpsctlConf, "nmea:rmc", false));
+    ubxEnableNMEAMsg(fdPort, verbosity, RMC, iniparser_getboolean(gpsctlConf, "nmea:rmc", true));
     ubxEnableNMEAMsg(fdPort, verbosity, VTG, iniparser_getboolean(gpsctlConf, "nmea:vtg", false));
     ubxEnableNMEAMsg(fdPort, verbosity, GRS, iniparser_getboolean(gpsctlConf, "nmea:grs", false));
     ubxEnableNMEAMsg(fdPort, verbosity, GST, iniparser_getboolean(gpsctlConf, "nmea:gst", false));
