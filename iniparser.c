@@ -629,6 +629,83 @@ void iniparser_unset(dictionary * ini, const char * entry)
     dictionary_unset(ini, strlwc(entry, tmp_str, sizeof(tmp_str)));
 }
 
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New long int value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+int iniparser_setlongint(dictionary *d, char *entry, long int val)
+{
+	int res;
+	char tmp_str[ASCIILINESZ+1];
+	int length = snprintf( NULL, 0, "%ld", val );
+	char* str = malloc( length + 1 );
+	snprintf( str, length + 1, "%ld", val );
+	res = dictionary_set(d, strlwc(entry, tmp_str, sizeof(tmp_str)), str);
+	free(str);
+
+	return res;
+}
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New int value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+int iniparser_setint(dictionary *d, char *entry, int val)
+{
+	return iniparser_setlongint(d, entry, (long int)val);
+}
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New double value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+int iniparser_setdouble(dictionary *d, char *entry, double val)
+{
+	int res;
+	char tmp_str[ASCIILINESZ+1];
+	int length = snprintf( NULL, 0, "%f", val );
+	char* str = malloc( length + 1 );
+	snprintf( str, length + 1, "%f", val );
+	res = dictionary_set(d, strlwc(entry, tmp_str, sizeof(tmp_str)), str);
+	free(str);
+
+	return res;
+}
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New boolean value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+int iniparser_setboolean(dictionary *d, char *entry, int val)
+{
+	char tmp_str[ASCIILINESZ+1];
+	return dictionary_set(d, strlwc(entry, tmp_str, sizeof(tmp_str)), (val) ? "true" : "false");
+}
+
 /*-------------------------------------------------------------------------*/
 /**
   @brief    Load a single line from an INI file

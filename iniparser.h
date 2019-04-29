@@ -306,6 +306,54 @@ int iniparser_set(dictionary * ini, const char * entry, const char * val);
 /*--------------------------------------------------------------------------*/
 void iniparser_unset(dictionary * ini, const char * entry);
 
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New long int value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+ int iniparser_setlongint(dictionary *d, char *entry, long int val);
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New int value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+int iniparser_setint(dictionary *d, char *entry, int val);
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New double value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+int iniparser_setdouble(dictionary *d, char *entry, double val);
+
+/**
+ * @brief    Set an entry in a dictionary.
+ * @param    ini     Dictionary to modify.
+ * @param    entry   Entry to modify (entry name)
+ * @param    val     New boolean value to associate to the entry.
+ * @return   int 0 if Ok, -1 otherwise.
+ *
+ * If the given entry can be found in the dictionary, it is modified to
+ * contain the provided value. If it cannot be found, -1 is returned.
+ */
+int iniparser_setboolean(dictionary *d, char *entry, int val);
+
 /*-------------------------------------------------------------------------*/
 /**
   @brief    Finds out if a given entry exists in a dictionary
