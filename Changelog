@@ -1,7 +1,11 @@
+2019-05-01 - Phil Randal - Release 1.2
+    Fix iniparser config dump code to correctly quote values containing ';' and '#'
+    Allow non boolean option for nmea:enabled to leave current setting undisturbed
+
 2019-05-01 - Phil Randal - Release 1.1
 
 2019-04-29 - Phil Randal
-    Rurn xxRMC on by default in the example gpsctl.conf file
+    Turn xxRMC on by default in the example gpsctl.conf file
     
 2019-04-28 - Phil Randal
     Replace ciniparser with iniparser (from my own fork)
