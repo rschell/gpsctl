@@ -944,6 +944,10 @@ static slReturn actionSync( const optionDef_slOptions* defs, const psloConfig* c
 static slReturn  actionNMEA(  const optionDef_slOptions* defs, const psloConfig* config ) {
 
     clientData_slOptions* clientData = config->clientData;
+    // If nmea flag is not explicitly 0 or 1 return without touching it
+    //   so nmea enabled option 'enabled=statusquo' wouldn't change setting 
+    if (clientData->nmea < 0 || clientData->nmea > 1)
+        return makeOkReturn();
     slReturn usResp = syncSerial( syncUBX, clientData );
     if( isErrorReturn( usResp ) )
         return makeErrorMsgReturn( ERR_CAUSE( usResp ), "could not synchronize UBX protocol" );
@@ -1371,7 +1375,7 @@ int main( int argc, char *argv[] ) {
     }
     clientData.verbosity  = iniparser_getint(gpsctlConf, "gpsctl:verbosity", 1);
     clientData.syncMethod = iniparser_getint(gpsctlConf, "gpsctl:sync method", syncUBX);
-    clientData.nmea =   iniparser_getboolean(gpsctlConf, "nmea:enabled", true);
+    clientData.nmea =   iniparser_getboolean(gpsctlConf, "nmea:enabled", -1);
     // iniparser_dump_ini(gpsctlConf, stdout);
     psloConfig config = {
             getOptionDefs( &clientData ),                       // our command-line option definitions...
