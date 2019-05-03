@@ -8,7 +8,8 @@ sync method = 3
 verbosity = 1
 
 [NMEA]
-enabled = true
+# enabled = true / false or non-boolean = don't care, leave it alone
+enabled = asitwas
 version = 40
 GGA = on
 GLL = on
