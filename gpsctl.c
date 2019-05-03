@@ -77,7 +77,7 @@ struct clientData_slOptions {
     int newbaud;
     bool report;
     bool echo;
-    bool nmea;
+    int nmea;
     bool json;
     int echoSeconds;
     queryType queryType;
