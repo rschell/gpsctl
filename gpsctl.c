@@ -661,13 +661,13 @@ static slReturn parseSyncMethod( void* ptrArg, int intArg, const optionDef_slOpt
 static slReturn parseBool( void* ptrArg, int intArg, const optionDef_slOptions* def, const char* arg, clientData_slOptions* clientData ) {
 
     // see if we've got anything that like a yes or true (otherwise, we make it a false)...
-    *((bool*)ptrArg) = false;
+    *((int*)ptrArg) = 0;
     if (arg) {
-        *((bool*)ptrArg) = (strchr( "yYtT1", *arg ) != NULL);
+        *((int*)ptrArg) = (strchr( "yYtT1", *arg ) != NULL ? 1 : 0);
         // now look for "on" and treat it as true
         if (strlen(arg) > 1) {
             if ((tolower(arg[0]) == 'o') && (tolower(arg[1]) == 'n')) {
-                *((bool*)ptrArg) = true;
+                *((int*)ptrArg) = 1;
             }
         }
     }
@@ -952,7 +952,7 @@ static slReturn  actionNMEA(  const optionDef_slOptions* defs, const psloConfig*
     if( isErrorReturn( usResp ) )
         return makeErrorMsgReturn( ERR_CAUSE( usResp ), "could not synchronize UBX protocol" );
 
-    slReturn resp = ubxSetNMEAData( clientData->fdPort, clientData->verbosity, clientData->nmea );
+    slReturn resp = ubxSetNMEAData( clientData->fdPort, clientData->verbosity, clientData->nmea);
     if( isErrorReturn( resp ) )
         return makeErrorFmtMsgReturn(ERR_CAUSE( resp ), "failed to turn NMEA data %s", clientData->nmea ? "on" : "off" );
 
