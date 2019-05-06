@@ -508,7 +508,7 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         cJSON_AddNumberToObject( pwr, "period_secs_for_interval", config.powerIntervalSecs );
         cJSON_AddNumberToObject( pwr, "on_time_secs_for_interval", config.powerOnTimeSecs );
 
-        cJSON_AddNumberToObject( nmea, "nmea_version", config.nmeaVersion );
+        cJSON_AddNumberToObject( nmea, "version", config.nmeaVersion );
 
         char *jsonStr = cJSON_PrintUnformatted( root );
         printf( "%s\n", jsonStr );
@@ -588,7 +588,8 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         printf( "    Period (if interval):         %d seconds\n",              config.powerIntervalSecs   );
         printf( "    On time (if interval):        %d seconds\n",              config.powerOnTimeSecs     );
 		
-	printf( "  NMEA Version:                   %02x\n",                    config.nmeaVersion );
+        printf( "  NMEA:\n" );
+        printf( "    Version:                      %02x\n",                    config.nmeaVersion );
     }
 
     return makeOkReturn();
