@@ -1,3 +1,6 @@
+2019-05-06 - Phil Randal
+    Minor change to NMEA version reporting to make it consistent
+
 2019-05-01 - Phil Randal - Release 1.2
     Fix iniparser config dump code to correctly quote values containing ';' and '#'
     Allow non boolean option for nmea:enabled to leave current setting undisturbed
