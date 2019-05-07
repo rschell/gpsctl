@@ -96,9 +96,9 @@ static unsigned strstrip(char * s)
     if (s==NULL) return 0;
 
     last = s + strlen(s);
-    while (isspace((int)*s) && *s) s++;
+    while (isspace((unsigned char)*s) && *s) s++;
     while (last > s) {
-        if (!isspace((int)*(last-1)))
+        if (!isspace((unsigned char)*(last-1)))
             break ;
         last -- ;
     }
@@ -823,7 +823,7 @@ dictionary * iniparser_merge(dictionary * dict, const char * ininame)
     char line    [ASCIILINESZ+1] ;
     char section [ASCIILINESZ+1] ;
     char key     [ASCIILINESZ+1] ;
-    char tmp     [(ASCIILINESZ * 2) + 1] ;
+    char tmp     [(ASCIILINESZ * 2) + 2] ;
     char val     [ASCIILINESZ+1] ;
 
     int  last=0 ;
@@ -868,7 +868,7 @@ dictionary * iniparser_merge(dictionary * dict, const char * ininame)
         }
         /* Get rid of \n and spaces at end of line */
         while ((len>=0) &&
-                ((line[len]=='\n') || (isspace(line[len])))) {
+                ((line[len]=='\n') || (isspace((unsigned char)line[len])))) {
             line[len]=0 ;
             len-- ;
         }
