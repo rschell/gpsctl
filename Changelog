@@ -1,3 +1,7 @@
+2019-05-07 - Phil Randal
+    Minor bug fixes to iniparser
+    Turn off debug symbols in gpsctl executable
+
 2019-05-06 - Phil Randal
     Minor change to NMEA version reporting to make it consistent
 
