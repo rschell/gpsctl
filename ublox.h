@@ -164,6 +164,15 @@ typedef struct {
     uint16_t       powerOnTimeSecs;         // power on time, in seconds, if in interval mode
     bool           nmeaEnabled;             // NMEA output enabled
     uint8_t		   nmeaVersion;				// NMEA Version - 0x21, 0x23, 0x40, or 0x41
+    bool           GGA;                     // NMEA output sentence types
+    bool           GLL;
+    bool           GSA;
+    bool           GSV;
+    bool           RMC;
+    bool           VTG;
+    bool           GRS;
+    bool           GST;
+    bool           ZDA;	
 } ubxConfig;
 
 typedef struct {

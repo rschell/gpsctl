@@ -11,6 +11,11 @@
 #include "sl_general.h"
 
 
+// Returns "on" or "off" for the given true or false.
+extern char* onOff( const bool onoff ) {
+    return onoff ? "on" : "off";
+}
+
 // Returns "yes" or "no" for the given true or false.
 extern char* yesNo( const bool yesno ) {
     return yesno ? "yes" : "no";

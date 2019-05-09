@@ -511,6 +511,14 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
 
         cJSON_AddBoolToObject( nmea, "enabled", config.nmeaEnabled );
         cJSON_AddNumberToObject( nmea, "version", (config.nmeaVersion / 16) + (config.nmeaVersion % 16) * 0.1 );
+        cJSON_AddBoolToObject( nmea, "GLL", config.GLL );
+        cJSON_AddBoolToObject( nmea, "GSA", config.GSA );
+        cJSON_AddBoolToObject( nmea, "GSV", config.GSV );
+        cJSON_AddBoolToObject( nmea, "RMC", config.RMC );
+        cJSON_AddBoolToObject( nmea, "VTG", config.VTG );
+        cJSON_AddBoolToObject( nmea, "GRS", config.GRS );
+        cJSON_AddBoolToObject( nmea, "GST", config.GST );
+        cJSON_AddBoolToObject( nmea, "ZDA", config.ZDA );
 
         char *jsonStr = cJSON_PrintUnformatted( root );
         printf( "%s\n", jsonStr );
@@ -589,10 +597,19 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         printf( "    Power setup:                  %s\n", getPowerModeName(    config.powerSetup )        );
         printf( "    Period (if interval):         %d seconds\n",              config.powerIntervalSecs   );
         printf( "    On time (if interval):        %d seconds\n",              config.powerOnTimeSecs     );
-		
+	
         printf( "  NMEA:\n" );
         printf( "    Enabled:                      %s\n", yesNo(               config.nmeaEnabled )       );
         printf( "    Version:                      %01x.%01x\n",               config.nmeaVersion / 16, config.nmeaVersion % 16 );
+        printf( "    GLL:                          %s\n", onOff(               config.GLL )               );
+        printf( "    GSA:                          %s\n", onOff(               config.GSA )               );
+        printf( "    GSV:                          %s\n", onOff(               config.GSV )               );
+        printf( "    RMC:                          %s\n", onOff(               config.RMC )               );
+        printf( "    VTG:                          %s\n", onOff(               config.VTG )               );
+        printf( "    GRS:                          %s\n", onOff(               config.GRS )               );
+        printf( "    GST:                          %s\n", onOff(               config.GST )               );
+        printf( "    ZDA:                          %s\n", onOff(               config.ZDA )               );
+
     }
 
     return makeOkReturn();
@@ -1387,7 +1404,7 @@ int main( int argc, char *argv[] ) {
             NULL, NULL,                                         // before, after constraint-checking functions...
             actionSetup, actionTeardown,                        // before, after action functions.
             "gpsctl",                                           // name of gpsctl...
-            "1.2",                                              // version of gpsctl...
+            "1.3",                                              // version of gpsctl...
             exampleText,                                        // usage examples...
             SL_OPTIONS_CONFIG_NORMAL                            // slOptions configuration options...
     };

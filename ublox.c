@@ -374,6 +374,17 @@ extern slReturn ubxReset( int fdPort, int verbosity ) {
     return sumResp;
 }
 
+// Query NMEA Message config
+extern slReturn isNMEAmsgEnabled( int fdPort, int verbosity, nmeaMSG messageID ) {
+    // poll for the current configuration...
+    ubxMsg poll = createUbxMsg( ut_CFG_MSG, init_slBuffer( LittleEndian, 0xf0, messageID ) );
+    ubxMsg current;
+    slReturn resp = pollUbx( fdPort, poll, CFG_NMEA_MAX_MS, &current );
+    if( isErrorReturn( resp ) ) return resp;
+
+    bool state =  get_uint8_slBuffer( current.body, 3 );
+    return makeOkInfoReturn( bool2info( state ) );
+}
 
 // Enable / disable NMEA Message types
 extern slReturn ubxEnableNMEAMsg( int fdPort, int verbosity, nmeaMSG messageID, bool enable ) {
@@ -1090,9 +1101,10 @@ extern slReturn ubxGetConfig( int fdPort, int verbosity, ubxConfig* config ) {
     // get the NMEA configuration...
     // is NMEA enabled?	
     slReturn cn = isNmeaOn( fdPort );
-	if( isErrorReturn( cn ) ) return cn;
+    if( isErrorReturn( cn ) ) return cn;
     config->nmeaEnabled = getReturnInfoBool( cn );
 
+    // get NMEA Version
     ubxType nmeaType = { UBX_CFG, UBX_CFG_NMEA };
     body = create_slBuffer( 0, LittleEndian );
     msg = createUbxMsg( nmeaType, body );
@@ -1103,6 +1115,32 @@ extern slReturn ubxGetConfig( int fdPort, int verbosity, ubxConfig* config ) {
     config->nmeaVersion        = get_uint8_slBuffer(  nmeaMsg.body, 1 );
     free( body );
     free( nmeaMsg.body );
+	
+    // Get NMEA sentence config
+    cn = isNMEAmsgEnabled( fdPort, verbosity, GLL );
+    if( isErrorReturn( cn ) ) return cn;
+    config->GLL = getReturnInfoBool( cn );
+    cn = isNMEAmsgEnabled( fdPort, verbosity, GSA );
+    if( isErrorReturn( cn ) ) return cn;
+    config->GSA = getReturnInfoBool( cn );
+    cn = isNMEAmsgEnabled( fdPort, verbosity, GSV );
+    if( isErrorReturn( cn ) ) return cn;
+    config->GSV = getReturnInfoBool( cn );
+    cn = isNMEAmsgEnabled( fdPort, verbosity, RMC );
+    if( isErrorReturn( cn ) ) return cn;
+    config->RMC = getReturnInfoBool( cn );
+    cn = isNMEAmsgEnabled( fdPort, verbosity, VTG );
+    if( isErrorReturn( cn ) ) return cn;
+    config->VTG = getReturnInfoBool( cn );
+    cn = isNMEAmsgEnabled( fdPort, verbosity, GRS );
+    if( isErrorReturn( cn ) ) return cn;
+    config->GRS = getReturnInfoBool( cn );
+    cn = isNMEAmsgEnabled( fdPort, verbosity, GST );
+    if( isErrorReturn( cn ) ) return cn;
+    config->GST = getReturnInfoBool( cn );
+    cn = isNMEAmsgEnabled( fdPort, verbosity, ZDA );
+    if( isErrorReturn( cn ) ) return cn;
+    config->ZDA = getReturnInfoBool( cn );
 
     return makeOkReturn();
 }
