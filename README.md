@@ -218,7 +218,7 @@ To view the current u-blox config
 
 ## Why did you fork it, Phil?
 
-It all stated when I decided to build a [Raspberry Pi Stratum 1 NTP server](http://www.philrandal.co.uk/blog/archives/2019/04/entry_213.html).
+It all started when I decided to build a [Raspberry Pi Stratum 1 NTP server](http://www.philrandal.co.uk/blog/archives/2019/04/entry_213.html).
 
 I found the original gpsctl when looking for something to configure my Raspberry Pi plus u-blox GPS to receive Galileo
 satellite output.  And then I tinkered a bit, tweaking settings, recompiling, tweaking again, and so on.
