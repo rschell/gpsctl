@@ -10,7 +10,7 @@ verbosity = 1
 [NMEA]
 # enabled = true / false or non-boolean = don't care, leave it alone
 enabled = asitwas
-version = 41
+version = 4.1
 GGA = off
 GLL = off
 GSA = off

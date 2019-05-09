@@ -451,6 +451,7 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         cJSON_AddItemToObject( root, "time_pulse", time );
         cJSON_AddItemToObject( root, "fix_rate",   rate );
         cJSON_AddItemToObject( root, "power_mode", pwr  );
+        cJSON_AddItemToObject( root, "nmea", nmea  );
 
         cJSON_AddBoolToObject( ant, "power_on", config.antPwr );
         cJSON_AddBoolToObject( ant, "short_detection", config.antShrtDet );
@@ -509,7 +510,7 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         cJSON_AddNumberToObject( pwr, "on_time_secs_for_interval", config.powerOnTimeSecs );
 
         cJSON_AddBoolToObject( nmea, "enabled", config.nmeaEnabled );
-        cJSON_AddNumberToObject( nmea, "version", config.nmeaVersion );
+        cJSON_AddNumberToObject( nmea, "version", (config.nmeaVersion / 16) + (config.nmeaVersion % 16) * 0.1 );
 
         char *jsonStr = cJSON_PrintUnformatted( root );
         printf( "%s\n", jsonStr );
@@ -591,7 +592,7 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
 		
         printf( "  NMEA:\n" );
         printf( "    Enabled:                      %s\n", yesNo(               config.nmeaEnabled )       );
-        printf( "    Version:                      %02x\n",                    config.nmeaVersion         );
+        printf( "    Version:                      %01x.%01x\n",               config.nmeaVersion / 16, config.nmeaVersion % 16 );
     }
 
     return makeOkReturn();
