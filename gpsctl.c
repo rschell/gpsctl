@@ -590,7 +590,7 @@ static slReturn doConfigQuery( const clientData_slOptions* clientData ) {
         printf( "    On time (if interval):        %d seconds\n",              config.powerOnTimeSecs     );
 		
         printf( "  NMEA:\n" );
-        printf( "    Enabled:                      %s\n",                      (config.nmeaEnabled) ? "True" : "False");
+        printf( "    Enabled:                      %s\n",                      (config.nmeaEnabled) ? "Yes" : "No");
         printf( "    Version:                      %02x\n",                    config.nmeaVersion );
     }
 
