@@ -950,6 +950,20 @@ extern char* getTimeGridTypeName( timegridType type ) {
     }
 }
 
+// Returns the current state of NMEA data on the GPS's UART.  If the return value is ok, the result is stored
+// as a bool in the information field.
+static slReturn isNmeaOn( int fdPort ) {
+
+    // poll for the current configuration...
+    ubxMsg poll = createUbxMsg( ut_CFG_PRT, init_slBuffer( LittleEndian, 1 /* UBX_CFG_PRT_UART_ID */ ) );
+    ubxMsg current;
+    slReturn resp = pollUbx( fdPort, poll, CFG_PRT_MAX_MS, &current );
+    if( isErrorReturn( resp ) ) return resp;
+
+    bool state =  isBitSet_slBits( get_uint16_slBuffer( current.body, 14 ), 1 );
+    return makeOkInfoReturn( bool2info( state ) );
+}
+
 // Fills the ubxConfig structure at the given pointer with information about the GPS's configuration.
 extern slReturn ubxGetConfig( int fdPort, int verbosity, ubxConfig* config ) {
 
@@ -1073,7 +1087,12 @@ extern slReturn ubxGetConfig( int fdPort, int verbosity, ubxConfig* config ) {
     free( body );
     free( pmsMsg.body );
 
-    // get the NMEA Version configuration...
+    // get the NMEA configuration...
+    // is NMEA enabled?	
+    slReturn cn = isNmeaOn( fdPort );
+	if( isErrorReturn( cn ) ) return cn;
+    config->nmeaEnabled = getReturnInfoBool( cn );
+
     ubxType nmeaType = { UBX_CFG, UBX_CFG_NMEA };
     body = create_slBuffer( 0, LittleEndian );
     msg = createUbxMsg( nmeaType, body );
@@ -1113,21 +1132,6 @@ extern slReturn ubxSynchronizer(  int fdPort, int maxTimeMs, int verbosity  ) {
             return makeOkInfoReturn( bool2info( true ) );
     }
     return makeOkInfoReturn( bool2info( false ) );
-}
-
-
-// Returns the current state of NMEA data on the GPS's UART.  If the return value is ok, the result is stored
-// as a bool in the information field.
-static slReturn isNmeaOn( int fdPort ) {
-
-    // poll for the current configuration...
-    ubxMsg poll = createUbxMsg( ut_CFG_PRT, init_slBuffer( LittleEndian, 1 /* UBX_CFG_PRT_UART_ID */ ) );
-    ubxMsg current;
-    slReturn resp = pollUbx( fdPort, poll, CFG_PRT_MAX_MS, &current );
-    if( isErrorReturn( resp ) ) return resp;
-
-    bool state =  isBitSet_slBits( get_uint16_slBuffer( current.body, 14 ), 1 );
-    return makeOkInfoReturn( bool2info( state ) );
 }
 
 
