@@ -1,6 +1,6 @@
 2019-05-07 - Phil Randal - Release 1.3
     Full reporting of enabled / disabled NMEA messages
-	Default to NMEA versioning in x.y format
+    Default to NMEA versioning in x.y format
 
 2019-05-07 - Phil Randal
     Minor bug fixes to iniparser
