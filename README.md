@@ -145,7 +145,7 @@ To view the current u-blox config
     GLL = off
     GSA = off
     GSV = off
-    RMC = off
+    RMC = on
     VTG = off
     GRS = off
     GST = off
