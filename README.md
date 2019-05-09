@@ -1,4 +1,4 @@
-<h1 align="center"><b>gpsctl 1.2</b></h1>
+<h1 align="center"><b>gpsctl 1.3</b></h1>
 
 ## What is gpsctl?
 *gpsctl* is a utility program written for Raspberry Pi computers using a U-Blox GPS board.  The 
@@ -140,7 +140,7 @@ To view the current u-blox config
     
     [NMEA]
     enabled = true
-    version = 41
+    version = 4.1
     GGA = off
     GLL = off
     GSA = off
@@ -215,3 +215,14 @@ To view the current u-blox config
     Locked pulse period = 1000000 microseconds
     Locked pulse length = 500000 microseconds
     User configurable delay = 0
+
+## Why did you fork it, Phil?
+
+It all stated when I decided to build a [Raspberry Pi Stratum 1 NTP server](http://www.philrandal.co.uk/blog/archives/2019/04/entry_213.html).
+
+I found the original gpsctl when looking for something to configure my Raspberry Pi plus u-blox GPS to receive Galileo
+satellite output.  And then I tinkered a bit, tweaking settings, recompiling, tweaking again, and so on.
+
+Hence the idea to use a configuration file to drive it.
+
+Enjoy.
