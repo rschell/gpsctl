@@ -423,15 +423,16 @@ extern slReturn ubxConfigNMEAVersion( int fdPort, int verbosity, uint8_t nmeaVer
     if( isErrorReturn( nmeaResp ) )
         return makeErrorMsgReturn( ERR_CAUSE( nmeaResp ), "problem getting NMEA Version information from GPS" );
 
-    // make the changes we need to make...
+    // make the changes we need to make only if we need to...
     slBuffer* b = nmeaMsg.body;
-    put_uint8_slBuffer( b,  1,      nmeaVersion );
-   
-    // now send it back to the GPS...
-    ubxMsg newnmeaMsg = createUbxMsg( nmeaMsg.type, b );
-    nmeaResp = sendUbxAckedMsg( fdPort, newnmeaMsg );
-    if( isErrorReturn( nmeaResp ) )
-        return makeErrorMsgReturn( ERR_CAUSE(nmeaResp), "problem sending NMEA Version configuration to GPS" );
+    if ( get_uint8_slBuffer( b,  1 ) != nmeaVersion ) {
+        put_uint8_slBuffer( b,  1,      nmeaVersion );
+        // now send it back to the GPS...
+        ubxMsg newnmeaMsg = createUbxMsg( nmeaMsg.type, b );
+        nmeaResp = sendUbxAckedMsg( fdPort, newnmeaMsg );
+        if( isErrorReturn( nmeaResp ) )
+            return makeErrorMsgReturn( ERR_CAUSE(nmeaResp), "problem sending NMEA Version configuration to GPS" );
+    }
     free( body );
     free( nmeaMsg.body );
 
