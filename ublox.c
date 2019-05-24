@@ -465,7 +465,7 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
         size_t o = 4 + 8 * (size_t)i;
         gnssID id = (gnssID) get_uint8_slBuffer(b,  o + 0);
         uint32_t flags;
-        switch(id) {
+        switch (id) {
 
             case GPS:
 
@@ -588,7 +588,7 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
     if (dnmeaver < 20.0) {
         dnmeaver = dnmeaver * 10.0;
     }
-    nmeaver = (int) dnmeaver;    
+    nmeaver = (int) dnmeaver;
     // force nmea version 41 or higher if Galileo is enabled
     if (galileo_enabled && nmeaver < 41) {
         nmeaver = 41;
@@ -672,7 +672,7 @@ extern slReturn ubxConfigNavEngine(int fdPort, int verbosity) {
         return makeErrorMsgReturn(ERR_CAUSE(suamResp), "problem sending navigation engine configuration to GPS");
     free(body);
     free(nav5Msg.body);
-	
+
     return makeOkReturn();
 }
 
@@ -681,7 +681,7 @@ extern slReturn ubxConfigForTiming(int fdPort, int verbosity) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
     ubxConfigSatellites(fdPort, verbosity);
- 
+
     // configure the time pulse...
     ubxConfigTimePulse(fdPort, verbosity);
 
@@ -698,7 +698,7 @@ extern slReturn ubxConfigForTiming(int fdPort, int verbosity) {
     ubxEnableNMEAMsg(fdPort, verbosity, GRS, iniparser_getboolean(gpsctlConf, "nmea:grs", false));
     ubxEnableNMEAMsg(fdPort, verbosity, GST, iniparser_getboolean(gpsctlConf, "nmea:gst", false));
     ubxEnableNMEAMsg(fdPort, verbosity, ZDA, iniparser_getboolean(gpsctlConf, "nmea:zda", true));
-    
+
     return makeOkReturn();
 }
 
@@ -785,7 +785,7 @@ extern slReturn ubxGetVersion(int fdPort, int verbosity, ubxVersion* version) {
 
 
 extern char* getSignalQuality(signalQuality qual) {
-    switch(qual) {
+    switch (qual) {
         case signalNone: return "None";
         case signalAcquired: return "Acquired";
         case signalCodeCarrierLocked: return "Code/carrier locked";
@@ -798,7 +798,7 @@ extern char* getSignalQuality(signalQuality qual) {
 
 
 extern char* getSatelliteHealth(satelliteHealth health) {
-    switch(health) {
+    switch (health) {
         case healthUnknown: return "Unknown";
         case healthOk: return "Ok";
         case healthBad: return "Bad";
@@ -808,7 +808,7 @@ extern char* getSatelliteHealth(satelliteHealth health) {
 
 
 extern char* getOrbitSource(orbitSource source) {
-    switch(source) {
+    switch (source) {
         case osNone: return "None";
         case osAlmanac: return "Almanac";
         case osAssistNowAutonomous: return "AssistNow auto";
@@ -873,7 +873,7 @@ extern slReturn ubxGetSatellites(int fdPort, int verbosity, ubxSatellites* satel
 
 
 extern char* getGnssName(gnssID id) {
-    switch(id) {
+    switch (id) {
         case GPS:     return "GPS";
         case SBAS:    return "SBAS";
         case Galileo: return "Galileo";
@@ -887,7 +887,7 @@ extern char* getGnssName(gnssID id) {
 
 
 extern char* getDynamicModelName(dynModel model) {
-    switch(model) {
+    switch (model) {
         case Portable:   return "Portable";
         case Stationary: return "Stationary";
         case Pedestrian: return "Pedestrian";
@@ -903,7 +903,7 @@ extern char* getDynamicModelName(dynModel model) {
 
 
 extern char* getFixModeName(fixMode mode) {
-    switch(mode) {
+    switch (mode) {
         case Only2D:   return "2D only";
         case Only3D:   return "3D only";
         case Auto2D3D: return "Auto 2D/3D";
@@ -913,7 +913,7 @@ extern char* getFixModeName(fixMode mode) {
 
 
 extern char* getUTCTypeName(utcType utc) {
-    switch(utc) {
+    switch (utc) {
         case AutoUTC:     return "Auto";
         case USNO_UTC:    return "USNO";
         case GLONASS_UTC: return "GLONASS";
@@ -924,7 +924,7 @@ extern char* getUTCTypeName(utcType utc) {
 
 
 extern char* getFixTimeRefName(fixTimeRefType type) {
-    switch(type) {
+    switch (type) {
         case fixUTC:     return "UTC";
         case fixGPS:     return "GPS";
         case fixGLONASS: return "GLONASS";
@@ -936,7 +936,7 @@ extern char* getFixTimeRefName(fixTimeRefType type) {
 
 
 extern char* getPowerModeName(powerModeType type) {
-    switch(type) {
+    switch (type) {
         case pmFull:          return "Full";
         case pmBalanced:      return "Balanced";
         case pmInterval:      return "Interval";
@@ -952,7 +952,7 @@ extern char* getPowerModeName(powerModeType type) {
 // Fills the ubxVersion structure at the given pointer with information about the GPS's version.  Returns the
 // appropriate reportResponse value.
 extern char* getTimeGridTypeName(timegridType type) {
-    switch(type) {
+    switch (type) {
         case tgUTC: return "UTC";
         case tgGPS: return "GPS";
         case tgGLONASS: return "GLONASS";
@@ -1100,7 +1100,7 @@ extern slReturn ubxGetConfig(int fdPort, int verbosity, ubxConfig* config) {
     free(pmsMsg.body);
 
     // get the NMEA configuration...
-    // is NMEA enabled?	
+    // is NMEA enabled?
     slReturn cn = isNmeaOn(fdPort);
     if (isErrorReturn(cn)) return cn;
     config->nmeaEnabled = getReturnInfoBool(cn);
@@ -1116,7 +1116,7 @@ extern slReturn ubxGetConfig(int fdPort, int verbosity, ubxConfig* config) {
     config->nmeaVersion        = get_uint8_slBuffer(nmeaMsg.body, 1);
     free(body);
     free(nmeaMsg.body);
-	
+
     // Get NMEA sentence config
     cn = isNMEAmsgEnabled(fdPort, verbosity, GLL);
     if (isErrorReturn(cn)) return cn;
