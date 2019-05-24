@@ -181,7 +181,7 @@ static slReturn syncSerial(const syncType type, clientData_slOptions* clientData
         return makeErrorMsgReturn(ERR_CAUSE(gsiResp), "problem getting speed information");
     int maxMs = (int) max_ll(1500, si.nsChar * 250 / 1000000);
 
-    switch(type) {
+    switch (type) {
         case syncNMEA:  return nmeaBaudRateSynchronizer(clientData->fdPort, maxMs, clientData->verbosity);
         case syncASCII: return asciiBaudRateSynchronizer(clientData->fdPort, maxMs, clientData->verbosity);
         case syncUBX:
@@ -597,7 +597,7 @@ static slReturn doConfigQuery(const clientData_slOptions* clientData) {
         printf("    Power setup:                  %s\n", getPowerModeName(config.powerSetup));
         printf("    Period (if interval):         %d seconds\n",              config.powerIntervalSecs);
         printf("    On time (if interval):        %d seconds\n",              config.powerOnTimeSecs);
-	
+
         printf("  NMEA:\n");
         printf("    Enabled:                      %s\n", yesNo(config.nmeaEnabled));
         printf("    Version:                      %01x.%01x\n",               config.nmeaVersion / 16, config.nmeaVersion % 16);
@@ -625,7 +625,7 @@ static slReturn parseMsgHelper(errorInfo_slReturn error, const optionDef_slOptio
     va_start(args, pattern);
     vasprintf(&resolved, pattern, args);
     va_end(args);
-    
+
     // return our bad news...
     slReturn result = makeErrorFmtMsgReturn(error, "option parsing problem: [%s] %s", getName_slOptions(def), resolved);
     free(resolved);
@@ -883,7 +883,7 @@ static slReturn actionAutoBaud(const optionDef_slOptions* defs, const psloConfig
     // first we figure out what synchronization type we're going to use...
     baudRateSynchronizer* synchronizer;
     clientData_slOptions* cd = config->clientData;
-    switch(cd->syncMethod) {
+    switch (cd->syncMethod) {
         case syncASCII:
             synchronizer = asciiBaudRateSynchronizer;
             break;
@@ -966,7 +966,7 @@ static slReturn  actionNMEA(const optionDef_slOptions* defs, const psloConfig* c
 
     clientData_slOptions* clientData = config->clientData;
     // If nmea flag is not explicitly 0 or 1 return without touching it
-    //   so nmea enabled option 'enabled=statusquo' wouldn't change setting 
+    //   so nmea enabled option 'enabled=statusquo' wouldn't change setting
     if (clientData->nmea < 0 || clientData->nmea > 1)
         return makeOkReturn();
     slReturn usResp = syncSerial(syncUBX, clientData);
@@ -990,7 +990,7 @@ static slReturn  actionQuery(const optionDef_slOptions* defs, const psloConfig* 
         return makeErrorMsgReturn(ERR_CAUSE(usResp), "could not synchronize UBX protocol");
 
     slReturn resp;
-    switch(clientData->queryType) {
+    switch (clientData->queryType) {
 
         case fixQuery:       resp = doFixQuery(clientData); break;
         case versionQuery:   resp = doVersionQuery(clientData); break;
@@ -1374,7 +1374,7 @@ int main(int argc, char *argv[]) {
     clientData.minBaud = 9600;
     clientData.ubxSynchronized = false;
 
-    // Create dictionary of program options 
+    // Create dictionary of program options
     gpsctlConf = dictionary_new(0);
 
     // prepopulate dictionary with some default settings as above - they'll be overridden by gpsctl.conf entries if they exist
@@ -1412,7 +1412,7 @@ int main(int argc, char *argv[]) {
     slReturn resp = process_slOptions(argc, (const char **) argv, &config);
 
     if (isErrorReturn(resp))
-        switch(clientData.verbosity) {
+        switch (clientData.verbosity) {
             case 0:  printf("Errors occurred!\n"); break;
             case 1:  printReturn(resp, false, false); break;
             case 2:  printReturn(resp, true, false); break;
