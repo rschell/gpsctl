@@ -1,4 +1,4 @@
-<h1 align="center"><b>gpsctl 1.3</b></h1>
+<h1 align="center"><b>gpsctl 1.4</b></h1>
 
 ## What is gpsctl?
 *gpsctl* is a utility program written for Raspberry Pi computers using a U-Blox GPS board.  The 
@@ -109,9 +109,9 @@ To autodetect the current baud rate, set the pi and u-blox module to 115200 baud
 
     gpsctl -a -B 115200 --configure_for_timing -vv
 
-To autodetect the current baud rate and enable Galileo satellites
+To autodetect the current baud rate and configure satellites only
 
-    gpsctl -a --galileo
+    gpsctl -a --satellites
     
 To view the current u-blox config
 
@@ -190,18 +190,18 @@ To view the current u-blox config
     # Dynamic model: Portable = 0, Stationary = 2, Pedestrian = 3, Automotive = 4, Sea = 5, Air1G = 6, Air2G = 7, Air4G = 8, Watch = 9 
     Dynamic model =                2
     # Fix mode: 2D only = 1, 3D only = 2, auto 2D/3D = 3
-    Fix mode =                     3
+    Fix mode =                     2
     Fixed altitude (2D) =          0.00 meters
-    Fixed altitude variance (2D) = 1.0000 meters^2
-    Minimum elevation =            5 degrees
+    Fixed altitude variance (2D) = 0.0000 meters^2
+    Minimum elevation =            20 degrees
     Position DoP mask =            10.0
     Time DoP mask =                10.0
-    Position accuracy mask =       100 meters
-    Time accuracy mask =           300 meters
+    Position accuracy mask =       40 meters
+    Time accuracy mask =           40 meters
     Static hold threshold =        0 cm/s
     Dynamic GNSS timeout =         60 seconds
-    Threshold above C/No =         0 satellites
-    C/No threshold =               0 dBHz
+    Threshold above C/No =         8 satellites
+    C/No threshold =               20 dBHz
     Static hold max distance =     0 meters
     # UTC Standard: AutoUTC = 0, USNO_UTC = 3, GLONASS_UTC = 6, BeiDou_UTC = 7
     UTC standard =                 3
