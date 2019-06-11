@@ -832,6 +832,9 @@ dictionary * iniparser_merge(dictionary * dict, const char * ininame)
     int  errs=0;
     int  mem_err=0;
 
+    int  connect_pos=0;
+    int  detect_len;
+
     if ((in=fopen(ininame, "r"))==NULL) {
         iniparser_error_callback("iniparser: cannot open %s\n", ininame);
         return NULL ;
@@ -852,6 +855,10 @@ dictionary * iniparser_merge(dictionary * dict, const char * ininame)
     last=0 ;
 
     while (fgets(line+last, ASCIILINESZ-last, in)!=NULL) {
+        char equal_flag=0;
+        char comment_flag=0;
+        char connect_flag=0;
+
         lineno++ ;
         len = (int)strlen(line)-1;
         if (len<=0)
@@ -869,8 +876,24 @@ dictionary * iniparser_merge(dictionary * dict, const char * ininame)
         /* Get rid of \n and spaces at end of line */
         while ((len>=0) &&
                 ((line[len]=='\n') || (isspace((unsigned char)line[len])))) {
-            line[len]=0 ;
-            len-- ;
+            line[len]=0;
+            len--;
+        }
+        /* detect string include these "=", "\", ";" or "#" */
+        detect_len = len;
+        while (line[len]!='\\' && detect_len>=0){
+            if (line[detect_len]==';' || line[detect_len]=='#') {
+                comment_flag=1;
+            }
+            if (comment_flag==1 && connect_flag ==0 && line[detect_len]=='\\') {
+                connect_flag=1;
+                connect_pos=detect_len ;
+            }
+            if (connect_flag==1 && line[detect_len]=='=') {
+                equal_flag=1;
+                break;
+            }
+            detect_len--;
         }
         if (len < 0) { /* Line was entirely \n and/or spaces */
             len = 0;
@@ -878,10 +901,14 @@ dictionary * iniparser_merge(dictionary * dict, const char * ininame)
         /* Detect multi-line */
         if (line[len]=='\\') {
             /* Multi-line value */
-            last=len ;
-            continue ;
+            last=len;
+            continue;
+          }
+        else if (equal_flag & connect_flag & comment_flag) {
+            last = connect_pos;
+            continue;
         } else {
-            last=0 ;
+            last=0;
         }
         switch (iniparser_line(line, section, key, val)) {
             case LINE_EMPTY:
