@@ -1,3 +1,6 @@
+2019-07-15 - Phil Randal - Release 1.5
+    Enable NMEA 4.1 for both Beidou and Galileo
+    
 2019-05-25 - Phil Randal - Release 1.4
     Changed default gpsctl.conf to match original program's apart from
         C/No threshold reduced to 20 dBHz
