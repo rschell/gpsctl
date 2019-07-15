@@ -445,9 +445,10 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
     // first read the current configuration...
-    int minch, maxch, enabled, galileo_enabled, nmeaver;
+    int minch, maxch, enabled, beidou_enabled, galileo_enabled, nmeaver;
     double dnmeaver;
 
+    beidou_enabled = 0;
     galileo_enabled = 0;
     ubxType gnssType = { UBX_CFG, UBX_CFG_GNSS };
     slBuffer* body = create_slBuffer(0, LittleEndian);
@@ -515,8 +516,8 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
             case BeiDou:
 
                 // disable everything else...
-                enabled = iniparser_getboolean(gpsctlConf, "beidou:enabled", false);
-                flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, enabled);
+                beidou_enabled = iniparser_getboolean(gpsctlConf, "beidou:enabled", false);
+                flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, beidou_enabled);
                 put_uint32_slBuffer(b, o + 4, flags);
 
                 // set our min and max channels...
@@ -589,8 +590,8 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
         dnmeaver = dnmeaver * 10.0;
     }
     nmeaver = (int) dnmeaver;
-    // force nmea version 41 or higher if Galileo is enabled
-    if (galileo_enabled && nmeaver < 41) {
+    // force nmea version 41 or higher if BeiDou or Galileo are enabled
+    if ((beidou_enabled || galileo_enabled) && nmeaver < 41) {
         nmeaver = 41;
     }
     // convert to from integer 40, 41, etc to hex 0x40, 0x41
