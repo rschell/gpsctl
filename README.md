@@ -127,6 +127,8 @@ To view the current u-blox config
  
  Without the gpsctl.conf file the program's behaviour will be the same as with version 0.6.
  
+ Note: Either BeiDou or Glonass can be configured, but not both at the same time.
+ 
  An example which configures for Galileo satellites:
  
     #
