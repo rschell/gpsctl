@@ -445,11 +445,20 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
     // first read the current configuration...
-    int minch, maxch, enabled, beidou_enabled, galileo_enabled, nmeaver;
+    int minch, maxch, enabled, beidou_enabled, galileo_enabled, glonass_enabled, nmeaver;
     double dnmeaver;
 
-    beidou_enabled = 0;
     galileo_enabled = 0;
+
+    // only oneof BeiDou and Glonass can be enabled at the same time
+    beidou_enabled = iniparser_getboolean(gpsctlConf, "beidou:enabled", false);
+    glonass_enabled = iniparser_getboolean(gpsctlConf, "glonass:enabled", true);
+    if (beidou_enabled && glonass_enabled) {
+      if (iniparser_getboolean(gpsctlConf, "gpsctl:prefer beidou to glonass if both enabled", false))
+        glonass_enabled = false;
+      else
+        beidou_enabled = false;
+    }
     ubxType gnssType = { UBX_CFG, UBX_CFG_GNSS };
     slBuffer* body = create_slBuffer(0, LittleEndian);
     ubxMsg msg = createUbxMsg(gnssType, body);
@@ -516,7 +525,6 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
             case BeiDou:
 
                 // disable everything else...
-                beidou_enabled = iniparser_getboolean(gpsctlConf, "beidou:enabled", false);
                 flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, beidou_enabled);
                 put_uint32_slBuffer(b, o + 4, flags);
 
@@ -561,8 +569,7 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
             case GLONASS:
 
                 // enable it...
-                enabled = iniparser_getboolean(gpsctlConf, "glonass:enabled", true);
-                flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, enabled);
+                flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, glonass_enabled);
                 put_uint32_slBuffer(b, o + 4, flags);
 
                 // set our min and max channels...
