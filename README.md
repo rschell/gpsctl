@@ -127,7 +127,7 @@ To view the current u-blox config
 
  Without the gpsctl.conf file the program's behaviour will be the same as with version 0.6.
 
- Note: Either BeiDou or Glonass can be configured, but not both at the same time.  If you try, the [gpsctl] option "prefer beidou to glonass if both enabled" (default: no)will overrideone of them.
+ Note: Either BeiDou or Glonass can be configured, but not both at the same time.  If you try, the [gpsctl] option "prefer beidou to glonass if both enabled" (default: no) will override one of them.
 
 
  An example which configures for Galileo satellites:
