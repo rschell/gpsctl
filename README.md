@@ -1,4 +1,4 @@
-<h1 align="center"><b>gpsctl 1.6</b></h1>
+<h1 align="center"><b>gpsctl 1.7</b></h1>
 
 ## What is gpsctl?
 *gpsctl* is a utility program written for Raspberry Pi computers using a U-Blox GPS board.  The
@@ -127,7 +127,7 @@ To view the current u-blox config
 
  Without the gpsctl.conf file the program's behaviour will be the same as with version 0.6.
 
- Note: Either BeiDou or Glonass can be configured, but not both at the same time.  If you try, the [gpsctl] option "prefer beidou to glonass if both enabled" (default: no) will override one of them.
+ Note: Either BeiDou or Glonass can be configured, but not both at the same time as GPS or Galileo.  If neither GPS nor Galileo are enabled, you can enable both BeiDou and Glonass.  If you try with GPS or Galileo enabled, the [gpsctl] option "prefer beidou to glonass if both enabled" (default: no) will override one of them.
 
 
  An example which configures for Galileo satellites:
