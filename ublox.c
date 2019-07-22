@@ -445,15 +445,16 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
 
     // configure the GNSS for GPS, GLONASS, BeiDou, and Galileo, with no SBAS.
     // first read the current configuration...
-    int minch, maxch, enabled, beidou_enabled, galileo_enabled, glonass_enabled, nmeaver;
+    int minch, maxch, enabled, beidou_enabled, galileo_enabled, glonass_enabled, gps_enabled, nmeaver;
     double dnmeaver;
 
-    galileo_enabled = 0;
+    gps_enabled = iniparser_getboolean(gpsctlConf, "gps:enabled", true);
+    galileo_enabled = iniparser_getboolean(gpsctlConf, "galileo:enabled", true);
 
-    // only oneof BeiDou and Glonass can be enabled at the same time
+    // only one of BeiDou and Glonass can be enabled at the same time if GPS or Galileo are enabled
     beidou_enabled = iniparser_getboolean(gpsctlConf, "beidou:enabled", false);
     glonass_enabled = iniparser_getboolean(gpsctlConf, "glonass:enabled", true);
-    if (beidou_enabled && glonass_enabled) {
+    if (beidou_enabled && glonass_enabled && (gps_enabled || galileo_enabled)) {
       if (iniparser_getboolean(gpsctlConf, "gpsctl:prefer beidou to glonass if both enabled", false))
         glonass_enabled = false;
       else
@@ -480,8 +481,7 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
             case GPS:
 
                 // enable it...
-                enabled = iniparser_getboolean(gpsctlConf, "gps:enabled", true);
-                flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, enabled);
+                flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, gps_enabled);
                 put_uint32_slBuffer(b, o + 4, flags);
 
                 // set our min and max channels...
@@ -510,7 +510,6 @@ extern slReturn ubxConfigSatellites(int fdPort, int verbosity) {
             case Galileo:
 
                 // enable it...
-                galileo_enabled = iniparser_getboolean(gpsctlConf, "galileo:enabled", true);
                 flags = (uint32_t) setBit_slBits(get_uint32_slBuffer(b, o + 4), 0, galileo_enabled);
                 put_uint32_slBuffer(b, o + 4, flags);
 
