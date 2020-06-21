@@ -5,6 +5,7 @@ Before=ntp.service
 
 [Service]
 Type=oneshot
+ExecStartPre=/bin/stty -F /dev/ttyAMA0 115200
 ExecStart=/usr/local/bin/gpsctl -q -a -B 115200 --configure_for_timing
 
 [Install]
