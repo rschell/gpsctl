@@ -1,3 +1,7 @@
+2020-06-21 - Phil Randal - Release 1.9
+    Set configure-rv3028.sh as executable
+    Reduce number of characters from 50 to 25 in baud rate autodetection
+
 2020-06-21 - Phil Randal - Release 1.8
     Run stty in ublox-init.service to fix startup glitches
     Add configure-rv3028.sh to configure the RTC on newer Uputronics GPS Hats
