@@ -250,7 +250,7 @@ extern slReturn setTermOptions( int fdPort, int baud, int dataBits, int stopBits
 }
 
 
-// Default baud rate synchronizer. This looks for 50 sequential characters in the normal range of ASCII codes, and
+// Default baud rate synchronizer. This looks for 25 sequential characters in the normal range of ASCII codes, and
 // then declares victory.  If result is Ok, additional info is true for success.
 extern slReturn asciiBaudRateSynchronizer( int fdPort, int maxTimeMs, int verbosity ) {
 
@@ -277,7 +277,7 @@ extern slReturn asciiBaudRateSynchronizer( int fdPort, int maxTimeMs, int verbos
         else
             count = 0;
 
-        if( count >= 50 )
+        if( count >= 25 )
             return makeOkInfoReturn( bool2info( true ) );
     }
     return makeOkInfoReturn( bool2info( false ) );

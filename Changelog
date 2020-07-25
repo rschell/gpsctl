@@ -1,3 +1,17 @@
+2020-07-17 - Phil Randal
+    Fix possible null pointer dereference in iniparser.c
+
+2020-06-21 - Phil Randal - Release 1.9
+    Set configure-rv3028.sh as executable
+    Reduce number of characters from 50 to 25 in baud rate autodetection
+
+2020-06-21 - Phil Randal - Release 1.8
+    Run stty in ublox-init.service to fix startup glitches
+    Add configure-rv3028.sh to configure the RTC on newer Uputronics GPS Hats
+
+2020-05-16 - Phil Randal
+    Update to cJSON 1.7.13
+
 2019-07-20 - Phil Randal - Release 1.7
     Allow BeiDou and Glonass to co-exist as long as neither GPS nor Galileo are enabled
 
