@@ -1,3 +1,7 @@
+2020-09-07 - Phil Randal
+    Added gpsctl.conf.ublox which matches the ublox config after gpsctl --reset
+    Added NMEA GGA config to gpsctl -Q config output
+
 2020-09-03 - Phil Randal
     Update to cJSON 1.7.14
 
