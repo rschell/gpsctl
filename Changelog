@@ -1,4 +1,4 @@
-2020-09-07 - Phil Randal
+2020-09-07 - Phil Randal - Release 1.10
     Added gpsctl.conf.ublox which matches the ublox config after gpsctl --reset
     Added NMEA GGA config to gpsctl -Q config output
 
