@@ -1,4 +1,4 @@
-2020-10-17 - Phil Randal
+2020-10-17 - Phil Randal - Release 1.10a
     Added configurable parameters to gpsctl in ublox-init.service
     Set parameters in /etc/default/gpstl, e.g.
         PARAMS="-q --configure_for_timing"
