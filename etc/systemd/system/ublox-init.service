@@ -5,7 +5,9 @@ Before=ntp.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/gpsctl -q -a -B 115200 --configure_for_timing
+Environment="PARAMS=-q -b -B 115200 --configure_for_timing"
+EnvironmentFile=-/etc/default/gpsctl
+ExecStart=/usr/local/bin/gpsctl ${PARAMS}
 
 [Install]
 WantedBy=multi-user.target
