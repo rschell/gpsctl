@@ -1,4 +1,7 @@
-2020-10-17 - Phil Randal - Release 1.10a
+2020-10-18 - Phil Randal - Release 1.11
+    Increased --autobaud synchronisation timeout from 1.5 to 3 seconds
+
+2020-10-18 - Phil Randal - Release 1.10b
     Added configurable parameters to gpsctl in ublox-init.service
     Set parameters in /etc/default/gpstl, e.g.
         PARAMS=-q --configure_for_timing
