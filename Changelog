@@ -1,7 +1,7 @@
 2020-10-17 - Phil Randal - Release 1.10a
     Added configurable parameters to gpsctl in ublox-init.service
     Set parameters in /etc/default/gpstl, e.g.
-        PARAMS="-q --configure_for_timing"
+        PARAMS=-q --configure_for_timing
 
 2020-09-07 - Phil Randal - Release 1.10
     Added gpsctl.conf.ublox which matches the ublox config after gpsctl --reset
