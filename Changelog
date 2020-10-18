@@ -1,3 +1,6 @@
+2020-10-18 - Phil Randal - Release 1.12
+    Increased --autobaud synchronisation timeout from 3 to 4 seconds
+
 2020-10-18 - Phil Randal - Release 1.11
     Increased --autobaud synchronisation timeout from 1.5 to 3 seconds
 
