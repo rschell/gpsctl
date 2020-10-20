@@ -290,8 +290,10 @@ extern slReturn asciiBaudRateSynchronizer( int fdPort, int maxTimeMs, int verbos
 // the host's port set to that baud rate.  If if fails to find a baud rate, returns an error.
 extern slReturn autoBaudRate( int fdPort, int minBaud, baudRateSynchronizer synchronizer, int verbosity ) {
 
-    // we're going to allow 250 character times, or 1.5 seconds, whichever is greater...
+    // we're going to allow 250 character times, or 4 seconds, whichever is greater...
     speedInfo si;
+    // this code block is in the wrong place, IMHO, and should be in the loop below
+    // However, a timeout of 4 seconds is OK for our purposes here, so I'm leaving it - PR
     slReturn gsiResp = getSpeedInfo( fdPort, &si );
     if( isErrorReturn( gsiResp ) )
         return makeErrorMsgReturn( ERR_CAUSE( gsiResp ), "problem getting speed information" );

@@ -1,3 +1,7 @@
+2020-10-20 - Phil Randal - Release 1.13
+    Added After=network-online.target to ublox-init.service
+    This gives me reliable baud rate autodetection at startup
+
 2020-10-18 - Phil Randal - Release 1.12
     Increased --autobaud synchronisation timeout from 3 to 4 seconds
 
