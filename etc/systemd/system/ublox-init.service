@@ -2,6 +2,8 @@
 Description=u-blox initialisation
 Before=gpsd.service
 Before=ntp.service
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=oneshot
