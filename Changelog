@@ -1,3 +1,26 @@
+2020-10-20 - Phil Randal - Release 1.13
+    Added After=network-online.target to ublox-init.service
+    This gives me reliable baud rate autodetection at startup
+    Minor patch to cJSON.c, not needed by us but who knows who borrows what from where
+
+2020-10-18 - Phil Randal - Release 1.12
+    Increased --autobaud synchronisation timeout from 3 to 4 seconds
+
+2020-10-18 - Phil Randal - Release 1.11
+    Increased --autobaud synchronisation timeout from 1.5 to 3 seconds
+
+2020-10-18 - Phil Randal - Release 1.10b
+    Added configurable parameters to gpsctl in ublox-init.service
+    Set parameters in /etc/default/gpstl, e.g.
+        PARAMS=-q --configure_for_timing
+
+2020-09-07 - Phil Randal - Release 1.10
+    Added gpsctl.conf.ublox which matches the ublox config after gpsctl --reset
+    Added NMEA GGA config to gpsctl -Q config output
+
+2020-09-03 - Phil Randal
+    Update to cJSON 1.7.14
+
 2020-07-17 - Phil Randal
     Fix possible null pointer dereference in iniparser.c
 

@@ -511,6 +511,7 @@ static slReturn doConfigQuery(const clientData_slOptions* clientData) {
 
         cJSON_AddBoolToObject(nmea, "enabled", config.nmeaEnabled);
         cJSON_AddNumberToObject(nmea, "version", (config.nmeaVersion / 16) + (config.nmeaVersion % 16) * 0.1);
+        cJSON_AddBoolToObject(nmea, "GGA", config.GGA);
         cJSON_AddBoolToObject(nmea, "GLL", config.GLL);
         cJSON_AddBoolToObject(nmea, "GSA", config.GSA);
         cJSON_AddBoolToObject(nmea, "GSV", config.GSV);
@@ -601,6 +602,7 @@ static slReturn doConfigQuery(const clientData_slOptions* clientData) {
         printf("  NMEA:\n");
         printf("    Enabled:                      %s\n", yesNo(config.nmeaEnabled));
         printf("    Version:                      %01x.%01x\n",               config.nmeaVersion / 16, config.nmeaVersion % 16);
+        printf("    GGA:                          %s\n", onOff(config.GGA));
         printf("    GLL:                          %s\n", onOff(config.GLL));
         printf("    GSA:                          %s\n", onOff(config.GSA));
         printf("    GSV:                          %s\n", onOff(config.GSV));
@@ -1404,7 +1406,7 @@ int main(int argc, char *argv[]) {
             NULL, NULL,                                         // before, after constraint-checking functions...
             actionSetup, actionTeardown,                        // before, after action functions.
             "gpsctl",                                           // name of gpsctl...
-            "1.9",                                              // version of gpsctl...
+            "1.13",                                              // version of gpsctl...
             exampleText,                                        // usage examples...
             SL_OPTIONS_CONFIG_NORMAL                            // slOptions configuration options...
     };

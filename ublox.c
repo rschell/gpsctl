@@ -1125,6 +1125,9 @@ extern slReturn ubxGetConfig(int fdPort, int verbosity, ubxConfig* config) {
     free(nmeaMsg.body);
 
     // Get NMEA sentence config
+    cn = isNMEAmsgEnabled(fdPort, verbosity, GGA);
+    if (isErrorReturn(cn)) return cn;
+    config->GGA = getReturnInfoBool(cn);
     cn = isNMEAmsgEnabled(fdPort, verbosity, GLL);
     if (isErrorReturn(cn)) return cn;
     config->GLL = getReturnInfoBool(cn);
